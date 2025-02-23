@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.5.0)
 project(cinny C CXX)
 
 # Automatically create moc files
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_STANDARD 14)
+# set(CMAKE_CXX_STANDARD 14)
 
 include(GNUInstallDirs)
 
