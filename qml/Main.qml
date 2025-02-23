@@ -13,9 +13,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import QtQuick 2.7
+import QtQuick 2.12
 import QtQuick.Layouts 1.0
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.2
 import Lomiri.Components 1.3
 import Lomiri.Components.Popups 1.3
 import Lomiri.PushNotifications 0.1
@@ -25,7 +25,7 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import QtQml 2.12
-import QtWebEngine 1.8
+import QtWebEngine 1.11
 import QtWebChannel 1.0
 import Backend 1.0
 
