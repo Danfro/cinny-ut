@@ -29,7 +29,6 @@ public:
 
     Q_INVOKABLE QString getIndexPath();
     Q_INVOKABLE void removeDownload(QString path);
-    Q_INVOKABLE QString saveBase64File(QString fileBase64, QString fileName);
 };
 
 #endif

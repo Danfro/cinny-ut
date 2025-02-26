@@ -102,7 +102,8 @@ MainView {
                     id : webContext
                     storageName : "Storage"
                     persistentStoragePath : "/home/phablet/.local/share/cinny.nitanmarcel/QWebEngine"
-
+                    // set default downloadpath because typescript webdownload always saves to this folder
+                    downloadPath: "/home/phablet/.cache/cinny.nitanmarcel"
                     onDownloadRequested: function (download) {
                          download.accept()
                     }
@@ -158,10 +159,10 @@ MainView {
 
                 signal matrixPushTokenChanged();
 
-                function handleDownload(fileBase64, fileName) {
-                    var filePath = Backend.saveBase64File(fileBase64, fileName)
-                    console.log("Downloaded to " + filePath)
-                    var downloadPage = mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {"url": filePath, "contentType": ContentType.All, "handler": ContentHandler.Destination})
+                function handleDownload(fileName) {
+                    var filePath = "/home/phablet/.cache/cinny.nitanmarcel/" + fileName
+                    // console.log("imagepath: " + filePath)
+                    mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {"url": filePath, "contentType": ContentType.All, "handler": ContentHandler.Destination})
                 }
 
                 function setTheme(themeName) {
