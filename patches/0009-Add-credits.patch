@@ -8,7 +8,7 @@ index 5a80e06..76305f0 100644
                      </li>
 +                    <li>
 +                        <Text size="T300">
-+                            The <a href="https://github.com/nitanmarcel/cinny-click-packaging" target="_blank" rel="noreferrer noopener">cinny-click-packaging</a> for Ubuntu Touch is © <a href="https://github.com/nitanmarcel" target="_blank" rel="noreferrer noopener">Marcel Alexandru Nitan</a> used under the terms of <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank" rel="noreferrer noopener">GNU GENERAL PUBLIC LICENSE v3.0</a>.
++                            The <a href="https://github.com/Danfro/cinny-click-packaging" target="_blank" rel="noreferrer noopener">cinny-click-packaging</a> for Ubuntu Touch was <a href="https://github.com/nitanmarcel/cinny-click-packaging" target="_blank" rel="noreferrer noopener">originally</a> done by <a href="https://github.com/nitanmarcel" target="_blank" rel="noreferrer noopener">Marcel Alexandru Nitan</a> used under the terms of <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank" rel="noreferrer noopener">GNU GENERAL PUBLIC LICENSE v3.0</a>. It is now maintained by <a href="https://github.com/Danfro" target="_blank" rel="noreferrer noopener">Danfro</a>.
 +                        </Text>
 +                    </li>
                    </Box>
