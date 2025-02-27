@@ -1,0 +1,30 @@
+diff --git a/src/app/components/message/content/FileContent.tsx b/src/app/components/message/content/FileContent.tsx
+index ad54c53..7b9226b 100644
+--- a/src/app/components/message/content/FileContent.tsx
++++ b/src/app/components/message/content/FileContent.tsx
+@@ -260,10 +260,16 @@ export function DownloadFile({ body, mimeType, url, info, encInfo }: DownloadFil
+ 
+       const fileURL = URL.createObjectURL(fileContent);
+       FileSaver.saveAs(fileURL, body);
++      QML.handleDownload(body);
+       return fileURL;
+     }, [mx, url, useAuthentication, mimeType, encInfo, body])
+   );
+ 
++  const handleDownload = async () => {
++    FileSaver.saveAs(downloadState.data, body);
++    QML.handleDownload(body);
++  };
++
+   return downloadState.status === AsyncStatus.Error ? (
+     renderErrorButton(download, `Retry Download (${bytesToSize(info.size ?? 0)})`)
+   ) : (
+@@ -274,7 +280,7 @@ export function DownloadFile({ body, mimeType, url, info, encInfo }: DownloadFil
+       size="400"
+       onClick={() =>
+         downloadState.status === AsyncStatus.Success
+-          ? FileSaver.saveAs(downloadState.data, body)
++          ? handleDownload
+           : download()
+       }
+       disabled={downloadState.status === AsyncStatus.Loading}

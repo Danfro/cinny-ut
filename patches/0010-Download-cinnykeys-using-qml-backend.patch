@@ -1,0 +1,12 @@
+diff --git a/src/app/features/settings/devices/LocalBackup.tsx b/src/app/features/settings/devices/LocalBackup.tsx
+index 00128c8..a05f47f 100644
+--- a/src/app/features/settings/devices/LocalBackup.tsx
++++ b/src/app/features/settings/devices/LocalBackup.tsx
+@@ -29,6 +29,7 @@ function ExportKeys() {
+           type: 'text/plain;charset=us-ascii',
+         });
+         FileSaver.saveAs(blob, 'cinny-keys.txt');
++        QML.handleDownload('cinny-keys.txt');
+       },
+       [mx]
+     )
