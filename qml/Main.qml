@@ -28,6 +28,7 @@ import QtQml 2.12
 import QtWebEngine 1.11
 import QtWebChannel 1.0
 import Backend 1.0
+import Qt.labs.platform 1.0 as PF //for StandardPaths
 
 // Comment
 
@@ -53,6 +54,8 @@ MainView {
         }
     }
 
+    property string appDataPath: PF.StandardPaths.writableLocation(PF.StandardPaths.AppDataLocation).toString().replace("file://","")
+    property string appCachePath: PF.StandardPaths.writableLocation(PF.StandardPaths.CacheLocation).toString().replace("file://","")
 
     Settings {
         id: appSettings
@@ -101,9 +104,10 @@ MainView {
                 profile : WebEngineProfile {
                     id : webContext
                     storageName : "Storage"
-                    persistentStoragePath : "/home/phablet/.local/share/cinny.nitanmarcel/QWebEngine"
+                    persistentStoragePath : appDataPath + "/QWebEngine"
                     // set default downloadpath because typescript webdownload always saves to this folder
-                    downloadPath: "/home/phablet/.cache/cinny.nitanmarcel"
+                    downloadPath: appCachePath  // downloads are saved only temporary and forwarded by content hub to the target location
+                    cachePath: appCachePath
                     onDownloadRequested: function (download) {
                          download.accept()
                     }
@@ -160,8 +164,7 @@ MainView {
                 signal matrixPushTokenChanged();
 
                 function handleDownload(fileName) {
-                    var filePath = "/home/phablet/.cache/cinny.nitanmarcel/" + fileName
-                    // console.log("imagepath: " + filePath)
+                    var filePath = appCachePath + "/" + fileName
                     mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {"url": filePath, "contentType": ContentType.All, "handler": ContentHandler.Destination})
                 }
 
