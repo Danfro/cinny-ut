@@ -1,0 +1,27 @@
+diff --git a/src/app/components/message/content/FileContent.tsx b/src/app/components/message/content/FileContent.tsx
+index ad54c53..75e5f8c 100644
+--- a/src/app/components/message/content/FileContent.tsx
++++ b/src/app/components/message/content/FileContent.tsx
+@@ -220,20 +220,10 @@ export function ReadPdfFile({ body, mimeType, url, encInfo, renderViewer }: Read
+           variant="Secondary"
+           fill="Solid"
+           radii="300"
+-          size="400"
++          size="0"
+           onClick={() => (pdfState.status === AsyncStatus.Success ? setPdfViewer(true) : loadPdf())}
+-          disabled={pdfState.status === AsyncStatus.Loading}
+-          before={
+-            pdfState.status === AsyncStatus.Loading ? (
+-              <Spinner fill="Solid" size="100" variant="Secondary" />
+-            ) : (
+-              <Icon size="100" src={Icons.ArrowRight} filled />
+-            )
+-          }
++          disabled={true} //{pdfState.status === AsyncStatus.Loading}
+         >
+-          <Text size="B400" truncate>
+-            Open PDF
+-          </Text>
+         </Button>
+       )}
+     </>
