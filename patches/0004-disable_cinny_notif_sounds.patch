@@ -1,0 +1,13 @@
+diff --git a/src/app/state/settings.ts b/src/app/state/settings.ts
+index ac47e78..e28a3f9 100644
+--- a/src/app/state/settings.ts
++++ b/src/app/state/settings.ts
+@@ -59,7 +59,7 @@ const defaultSettings: Settings = {
+   showHiddenEvents: false,
+ 
+   showNotifications: true,
+-  isNotificationSounds: true,
++  isNotificationSounds: false,
+ 
+   developerTools: false,
+ };
