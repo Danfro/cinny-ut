@@ -14,3 +14,33 @@ The forked app in this repository maintained by me (Danfro).
 
 [![OpenStore](https://open-store.io/badges/en_US.png)](https://open-store.io/app/cinny.nitanmarcel)
 
+## Building the app
+
+1. Install [Clickable](https://clickable-ut.dev/en/dev/index.html)
+2. Fork this repository with `git clone LINK_TO_REPO`
+3. Change into the cinny click packaging folder
+4. Attach an Ubuntu Touch device via usb to your machine
+4. Run `clickable` from the root folder of this repository to build and deploy the app on your attached device, or run `clickable desktop` to test the app on desktop. You can run `clickable log` for debugging information.
+
+
+## Patches
+
+For UT integration several patches are applied. Those are located in the `/patches` folder. Please see the [patch description](/patches/patch_description.md) for details.
+
+When Cinny is build, first a fresh copy of Cinny with the version specified in [prebuild.sh](/prebuild.sh) is downloaded from the originating repository. So if we need to apply changes, we need to use patches, that will be applied after the code has been downloaded.
+
+Before the click packaging, in [prebuild.sh](/prebuild.sh) the function `apply_patches ()` cycles through all available `.patch` files and applies the changes. Patches use the `git diff` magic to create patches and to apply those changes.
+
+To create a patch...
+- enter the folder of the git repository (for Cinny the /cinny subfolder) with `cd cinny`
+- make sure only the changes are present, that want to go into one patch, discard all other changes OR run `git diff` specifying a single file
+- use `git diff > file.patch` to create a patch file of all present changes
+- for the diff of a single file run `git diff -- ./src/client/state/cons.js -p > ../patches/cons.patch`
+- `cd ..` back into the cinny packaging folder
+- after each build leave the cinny subfolder, otherwise git will not pick up changes
+- move the patch file from the cinny folder to the patches folder
+- combined command (edit patch file name): 
+
+  `cd cinny && git diff > ../patches/0006-Download-media-using-qml-backend.patch && cd ..`
+
+- the `git apply` command is then used in [prebuild.sh](/prebuild.sh) to apply the diff patches
