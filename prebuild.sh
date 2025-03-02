@@ -31,16 +31,23 @@ clone () {
 
 apply_patches () {
   echo "Patching cinny source code"
-  if [ -d "${ROOT}/patches" ]; then
-    for patch in ${ROOT}/patches/*.patch; do
-      echo "Applying $patch"
-      git apply ${patch}
-    done
+  patches_dir="${ROOT}/patches"
+  if [ -d "$patches_dir" ]; then
+    patch_files=("$patches_dir"/*.patch)
+    if [ -e "${patch_files[0]}" ]; then
+      for patch in "${patch_files[@]}"; do
+        echo "Applying $patch"
+        git apply "$patch"
+      done
+    else
+      echo "No patch files found in $patches_dir"
+    fi
+  else
+    echo "No patches directory found at $patches_dir"
   fi
   cp "${ROOT}/svg/cinny_512.svg" "${ROOT}/assets/logo.svg"
   cp "${ROOT}/svg/cinny_18.svg" "${ROOT}/cinny/public/res/svg/cinny.svg"
 }
-
 
 setup_node () {
   echo "Setting up node $NODE_VERSION"
