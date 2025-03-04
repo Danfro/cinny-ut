@@ -6,7 +6,7 @@ index 9c7fd98..de0362a 100644
  
      const handleDownload = () => {
        FileSaver.saveAs(src, name);
-+      QML.handleDownload(name);
++      QML.handleDownload(name, "document");
      };
  
      const handleJumpSubmit: FormEventHandler<HTMLFormElement> = (evt) => {

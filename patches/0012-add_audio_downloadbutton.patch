@@ -1,0 +1,40 @@
+diff --git a/src/app/components/message/content/AudioContent.tsx b/src/app/components/message/content/AudioContent.tsx
+index 71551b1..aeeb561 100644
+--- a/src/app/components/message/content/AudioContent.tsx
++++ b/src/app/components/message/content/AudioContent.tsx
+@@ -1,5 +1,6 @@
+ /* eslint-disable jsx-a11y/media-has-caption */
+ import React, { ReactNode, useCallback, useRef, useState } from 'react';
++import FileSaver from 'file-saver';
+ import { Badge, Chip, Icon, IconButton, Icons, ProgressBar, Spinner, Text, toRem } from 'folds';
+ import { EncryptedAttachmentInfo } from 'browser-encrypt-attachment';
+ import { Range } from 'react-range';
+@@ -90,6 +91,12 @@ export function AudioContent({
+       loadSrc();
+     }
+   };
++  const handleDownload = async () => {
++    const mediaUrl = mxcUrlToHttp(mx, url, useAuthentication) ?? url;
++    const fileContent = await downloadMedia(mediaUrl);
++    FileSaver.saveAs(fileContent, url);
++    QML.handleDownload(url,"audio");
++  };
+ 
+   return renderMediaControl({
+     after: (
+@@ -154,6 +161,15 @@ export function AudioContent({
+     ),
+     rightControl: (
+       <>
++        <IconButton
++          variant="SurfaceVariant"
++          size="300"
++          radii="Pill"
++          onClick={handleDownload}
++          aria-pressed={mute}
++        >
++          <Icon size="50" src={Icons.Download} />
++        </IconButton>
+         <IconButton
+           variant="SurfaceVariant"
+           size="300"

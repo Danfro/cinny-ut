@@ -6,14 +6,14 @@ index ad54c53..7b9226b 100644
  
        const fileURL = URL.createObjectURL(fileContent);
        FileSaver.saveAs(fileURL, body);
-+      QML.handleDownload(body);
++      QML.handleDownload(body,"default");
        return fileURL;
      }, [mx, url, useAuthentication, mimeType, encInfo, body])
    );
  
 +  const handleDownload = async () => {
 +    FileSaver.saveAs(downloadState.data, body);
-+    QML.handleDownload(body);
++    QML.handleDownload(body,"default");
 +  };
 +
    return downloadState.status === AsyncStatus.Error ? (

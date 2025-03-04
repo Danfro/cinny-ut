@@ -1,8 +1,11 @@
 {
     "source": [
-        "pictures",
-        "documents",
-        "videos",
-        "contacts"
+        "all"
+    ],
+    "destination": [
+        "all"
+    ],
+    "share": [
+        "all"
     ]
 }

@@ -24,9 +24,9 @@ Page {
     id: picker
     property var activeTransfer
 
-    property string url
-    property string handler
-    property string contentType
+    property var url
+    property var handler
+    property var itemContentType
 
     signal cancel()
     signal imported(string fileUrl)
@@ -49,7 +49,8 @@ Page {
         anchors { fill: parent; topMargin: picker.header.height }
         visible: parent.visible
         showTitle: false
-        contentType: ContentType.All
+        contentType: itemContentType
+        // }//picker.contentType //ContentType.All
         handler: ContentHandler.Share
 
         onPeerSelected: {

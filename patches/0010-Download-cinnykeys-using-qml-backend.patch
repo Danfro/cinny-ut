@@ -6,7 +6,7 @@ index 00128c8..a05f47f 100644
            type: 'text/plain;charset=us-ascii',
          });
          FileSaver.saveAs(blob, 'cinny-keys.txt');
-+        QML.handleDownload('cinny-keys.txt');
++        QML.handleDownload('cinny-keys.txt', "document");
        },
        [mx]
      )

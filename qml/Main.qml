@@ -110,6 +110,7 @@ MainView {
                     cachePath: appCachePath
                     onDownloadRequested: function (download) {
                          download.accept()
+                         console.log("onDownloadRequested triggered")
                     }
 
                 }
@@ -163,9 +164,38 @@ MainView {
 
                 signal matrixPushTokenChanged();
 
-                function handleDownload(fileName) {
+                function handleDownload(fileName,content) {
                     var filePath = appCachePath + "/" + fileName
-                    mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {"url": filePath, "contentType": ContentType.All, "handler": ContentHandler.Destination})
+                    var contentType
+                    switch (content) {
+                        case "image":
+                            contentType = ContentType.Pictures; //int 2
+                            console.log("content hub type image");
+                            break;
+                        case "audio":
+                            contentType = ContentType.Music; //int 3
+                            console.log("content hub type audio");
+                            break;
+                        // case "video":
+                        //     contentType = ContentType.Video; //not defined
+                        //     console.log("content hub type video");
+                        //     break;
+                        case "contact":
+                            contentType = ContentType.Contacts; //int 4
+                            console.log("content hub type contact");
+                            break;
+                        case "document":
+                            contentType = ContentType.Documents; //int 1
+                            console.log("content hub type document");
+                            break;
+                        case "default":
+                            contentType = ContentType.All; //int -1
+                            console.log("content hub type default");
+                            break;
+                        default:
+                            contentType = ContentType.All; //int -1
+                    }
+                    mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {"url": filePath, "itemContentType": contentType, "handler": ContentHandler.Share})
                 }
 
                 function setTheme(themeName) {

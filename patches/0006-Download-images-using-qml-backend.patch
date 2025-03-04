@@ -6,7 +6,7 @@ index 4956a7b..4c88c79 100644
      const handleDownload = async () => {
        const fileContent = await downloadMedia(src);
        FileSaver.saveAs(fileContent, alt);
-+      QML.handleDownload(alt);
++      QML.handleDownload(alt,"image");
      };
  
      return (

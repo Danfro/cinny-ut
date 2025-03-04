@@ -6,7 +6,7 @@ index fb09c15..f395c74 100644
        type: 'text/plain;charset=us-ascii',
      });
      FileSaver.saveAs(blob, 'recovery-key.txt');
-+    QML.handleDownload('recovery-key.txt');
++    QML.handleDownload('recovery-key.txt', "document");
    };
  
    const safeToDisplayKey = show ? recoveryKey : recoveryKey.replace(/[^\s]/g, '*');
