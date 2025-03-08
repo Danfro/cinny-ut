@@ -1,5 +1,5 @@
 diff --git a/src/app/components/message/content/AudioContent.tsx b/src/app/components/message/content/AudioContent.tsx
-index 71551b1..aeeb561 100644
+index 71551b1..bb28fdc 100644
 --- a/src/app/components/message/content/AudioContent.tsx
 +++ b/src/app/components/message/content/AudioContent.tsx
 @@ -1,5 +1,6 @@
@@ -9,7 +9,7 @@ index 71551b1..aeeb561 100644
  import { Badge, Chip, Icon, IconButton, Icons, ProgressBar, Spinner, Text, toRem } from 'folds';
  import { EncryptedAttachmentInfo } from 'browser-encrypt-attachment';
  import { Range } from 'react-range';
-@@ -90,6 +91,12 @@ export function AudioContent({
+@@ -90,6 +91,11 @@ export function AudioContent({
        loadSrc();
      }
    };
@@ -17,12 +17,11 @@ index 71551b1..aeeb561 100644
 +    const mediaUrl = mxcUrlToHttp(mx, url, useAuthentication) ?? url;
 +    const fileContent = await downloadMedia(mediaUrl);
 +    FileSaver.saveAs(fileContent, url);
-+    QML.handleDownload(url,"audio");
 +  };
  
    return renderMediaControl({
      after: (
-@@ -154,6 +161,15 @@ export function AudioContent({
+@@ -154,6 +160,15 @@ export function AudioContent({
      ),
      rightControl: (
        <>
