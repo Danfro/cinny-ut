@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2022  Marcel Alexandru Nitan
+ * Copyright (C) 2025  Danfro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

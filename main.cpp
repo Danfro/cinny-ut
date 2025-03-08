@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2022  Marcel Alexandru Nitan
+ * Copyright (C) 2025  Danfro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +39,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QGuiApplication *app = new QGuiApplication(argc, (char **)argv);
     QQuickStyle::setStyle("Suru");
-    app->setApplicationName("cinny.nitanmarcel");
+    app->setApplicationName("cinny.danfro");
 
     mimes[".html"] = "text/html";
     mimes[".css"] = "text/css";

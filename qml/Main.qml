@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2022  Marcel Alexandru Nitan
+ * Copyright (C) 2025  Danfro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +36,7 @@ import Qt.labs.platform 1.0 as PF //for StandardPaths
 MainView {
     id : mainView
     objectName : 'mainView'
-    applicationName : 'cinny.nitanmarcel'
+    applicationName : 'cinny.danfro'
     automaticOrientation : true
     backgroundColor : "transparent"
     anchors {
@@ -61,7 +62,7 @@ MainView {
         id: appSettings
         property string systemTheme: 'Ambiance'
         property string pushToken: ''
-        property string pushAppId: 'cinny.nitanmarcel_cinny'
+        property string pushAppId: 'cinny.danfro_cinny'
         property bool windowActive: true
     }
 

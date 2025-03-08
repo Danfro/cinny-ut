@@ -20,7 +20,7 @@ execute_process(
 set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
 
 set(PROJECT_NAME "cinny")
-set(FULL_PROJECT_NAME "cinny.nitanmarcel")
+set(FULL_PROJECT_NAME "cinny.danfro")
 set(DATA_DIR /)
 set(DESKTOP_FILE_NAME ${PROJECT_NAME}.desktop)
 

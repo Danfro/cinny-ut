@@ -12,7 +12,7 @@ Click packaging was originally done by [Marcel Alexandru Nitan](https://github.c
 
 The forked app in this repository maintained by me (Danfro).
 
-[![OpenStore](https://open-store.io/badges/en_US.png)](https://open-store.io/app/cinny.nitanmarcel)
+[![OpenStore](https://open-store.io/badges/en_US.png)](https://open-store.io/app/cinny.danfro)
 
 ## Building the app
 
