@@ -59,7 +59,6 @@ Page {
             picker.activeTransfer = peer.request()
             picker.activeTransfer.stateChanged.connect(function() {
                 if (picker.activeTransfer.state === ContentTransfer.InProgress) {
-                    console.log("In progress " + picker.url);
                     //picker.activeTransfer.items = picker.activeTransfer.items[0].url = url;
                     picker.activeTransfer.items = [ resultComponent.createObject(parent, {"url": "file://" + picker.url}) ];
                     picker.activeTransfer.state = ContentTransfer.Charged;
