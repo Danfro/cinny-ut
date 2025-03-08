@@ -55,7 +55,7 @@ Page {
         anchors { fill: parent; topMargin: picker.header.height }
         visible: parent.visible
         showTitle: false
-        contentType: picker.contentType //ContentType.Pictures
+        contentType: picker.contentType
         handler: picker.handler //ContentHandler.Source
 
         onPeerSelected: {
@@ -67,8 +67,8 @@ Page {
                                picker.activeTransfer.state = ContentTransfer.Charged;
                         }
                 if (picker.activeTransfer.state === ContentTransfer.Charged) {
-                     picker.imported(picker.activeTransfer.items[0].url)
-                     picker.activeTransfer = null
+                    picker.imported(picker.activeTransfer.items[0].url)
+                    picker.activeTransfer = null
                     pageStack.pop()
                 }
             })

@@ -51,7 +51,6 @@ Page {
         visible: parent.visible
         showTitle: false
         contentType: itemContentType
-        // }//picker.contentType //ContentType.All
         handler: ContentHandler.Share
 
         onPeerSelected: {

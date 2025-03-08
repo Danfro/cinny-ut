@@ -1,11 +1,22 @@
 {
-    "source": [
-        "all"
+    "share": [
+        "contacts",
+        "documents",
+        "ebooks",
+        "links",
+        "music",
+        "pictures",
+        "text",
+        "videos"
     ],
     "destination": [
-        "all"
-    ],
-    "share": [
-        "all"
+        "contacts",
+        "documents",
+        "ebooks",
+        "links",
+        "music",
+        "pictures",
+        "text",
+        "videos"
     ]
 }
