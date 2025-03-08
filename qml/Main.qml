@@ -16,7 +16,7 @@
  */
 import QtQuick 2.12
 import QtQuick.Layouts 1.0
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.12
 import Lomiri.Components 1.3
 import Lomiri.Components.Popups 1.3
 import Lomiri.PushNotifications 0.1
@@ -102,19 +102,8 @@ MainView {
                 webChannel: channel
                 settings.pluginsEnabled : true
                 settings.javascriptEnabled : true
-                profile : WebEngineProfile {
-                    id : webContext
-                    storageName : "Storage"
-                    persistentStoragePath : appDataPath + "/QWebEngine"
-                    // set default downloadpath because typescript webdownload always saves to this folder
-                    downloadPath: appCachePath  // downloads are saved only temporary and forwarded by content hub to the target location
-                    cachePath: appCachePath
-                    onDownloadRequested: function (download) {
-                         download.accept()
-                         console.log("onDownloadRequested triggered")
-                    }
-
-                }
+                profile : webContext
+                
                 onNewViewRequested : function (request) {
                     request.action = WebEngineNavigationRequest.IgnoreRequest
                     if (request.requestedUrl !== "ignore://") {
@@ -165,42 +154,74 @@ MainView {
 
                 signal matrixPushTokenChanged();
 
-                function handleDownload(fileName,content) {
-                    var filePath = appCachePath + "/" + fileName
-                    var contentType
-                    switch (content) {
-                        case "image":
+                function setTheme(themeName) {
+                    setCurrentTheme(themeName)
+                }
+            }
+            WebEngineProfile {
+                id : webContext
+                property var filePath
+                property var contentType
+                storageName : "Storage"
+                persistentStoragePath : appDataPath + "/QWebEngine"
+                // set default downloadpath because typescript webdownload always saves to this folder
+                downloadPath: appCachePath  // downloads are saved only temporary and forwarded by content hub to the target location
+                cachePath: appCachePath
+                onDownloadRequested: function (downloadItem) {
+                    // https://doc.qt.io/qt-5/qml-qtwebengine-webenginedownloaditem.html
+
+                    // determine content hub type based on mime type
+                    // TODO: add more mime types, see dekko and here: https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types/Common_types
+                    switch (downloadItem.mimeType) {
+                        case "image/jpeg": // no break between this and the next condition means both are treated the same
+                        case "image/png":
                             contentType = ContentType.Pictures; //int 2
-                            console.log("content hub type image");
-                            break;
-                        case "audio":
+                            break
+                        case "audio/mpeg":
                             contentType = ContentType.Music; //int 3
-                            console.log("content hub type audio");
+                            console.log("audio file name: " + downloadItem.fileName)
+                            // 
+                            downloadItem.fileName = "Cinny soundfile" + downloadItem.fileName.substr(id.length - 3)
                             break;
-                        // case "video":
-                        //     contentType = ContentType.Video; //not defined
-                        //     console.log("content hub type video");
-                        //     break;
-                        case "contact":
-                            contentType = ContentType.Contacts; //int 4
-                            console.log("content hub type contact");
+                        case "application/ogg":
+                            contentType = ContentType.Music; //int 3
                             break;
-                        case "document":
-                            contentType = ContentType.Documents; //int 1
-                            console.log("content hub type document");
-                            break;
-                        case "default":
+                        case "video/mp4":
+                            // contentType = ContentType.Video; //not defined
                             contentType = ContentType.All; //int -1
-                            console.log("content hub type default");
+                            console.log("content hub type video " + downloadItem.mimeType);
+                            break;
+                        case "text/x-vcard": //.vcf
+                            contentType = ContentType.Contacts; //int 4
+                            console.log("content hub type contact " + downloadItem.mimeType);
+                            break;
+                        case "text/plain":
+                            contentType = ContentType.Documents; //int 1
+                            console.log("content hub type document " + downloadItem.mimeType);
+                            break;
+                        case "application/pdf":
+                            contentType = ContentType.Documents; //int 1
                             break;
                         default:
                             contentType = ContentType.All; //int -1
+                            console.log("content hub type default, mime type " + downloadItem.mimeType);
+                    }
+
+                    filePath = downloadItem.downloadDirectory + "/" + downloadItem.downloadFileName
+                    downloadItem.accept()
+                    // wait until download is finished before processing the next command
+                    while(downloadItem.state != 1) {
+                        wait(100)
                     }
                     mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {"url": filePath, "itemContentType": contentType, "handler": ContentHandler.Share})
                 }
-
-                function setTheme(themeName) {
-                    setCurrentTheme(themeName)
+                // js waiter function
+                function wait(ms){
+                    var start = new Date().getTime();
+                    var end = start;
+                    while(end < start + ms) {
+                        end = new Date().getTime();
+                    }
                 }
             }
         }
