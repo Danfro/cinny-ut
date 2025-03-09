@@ -175,36 +175,56 @@ MainView {
                     switch (downloadItem.mimeType) {
                         case "image/jpeg": // no break between this and the next condition means both are treated the same
                         case "image/png":
+                        case "image/gif":
+                        case "image/bmp":
+                        case "image/webp":
+                        case "image/svg+xml":
                             contentType = ContentType.Pictures; //int 2
                             break
+                        // audio items currently do not provide a file name, just the internal url -> assign a default file name
                         case "audio/mpeg":
                             contentType = ContentType.Music; //int 3
-                            console.log("audio file name: " + downloadItem.fileName)
+                            console.log("audio file name: " + downloadItem.downloadFileName)
                             // 
-                            downloadItem.fileName = "Cinny soundfile" + downloadItem.fileName.substr(id.length - 3)
+                            downloadItem.downloadFileName = "Cinny soundfile.mp3"
+                            console.log("audio file name: " + downloadItem.downloadFileName)
                             break;
-                        case "application/ogg":
+                        case "audio/ogg":
                             contentType = ContentType.Music; //int 3
+                            console.log("audio file name: " + downloadItem.downloadFileName)
+                            // 
+                            downloadItem.downloadFileName = "Cinny soundfile.ogg"
+                            console.log("audio file name: " + downloadItem.downloadFileName)
+                            break;
+                        case "audio/ogg":
+                            contentType = ContentType.Music; //int 3
+                            console.log("audio file name: " + downloadItem.downloadFileName)
+                            // 
+                            downloadItem.downloadFileName = "Cinny soundfile.ogg"
+                            console.log("audio file name: " + downloadItem.downloadFileName)
                             break;
                         case "video/mp4":
-                            // contentType = ContentType.Video; //not defined
-                            contentType = ContentType.All; //int -1
-                            console.log("content hub type video " + downloadItem.mimeType);
+                        case "video/mpeg":
+                        case "video/h264":
+                            contentType = ContentType.Video; //not defined -> use type all
+                            // contentType = ContentType.All; //int -1
                             break;
+                        case "text/vcard": //.vcf
                         case "text/x-vcard": //.vcf
                             contentType = ContentType.Contacts; //int 4
-                            console.log("content hub type contact " + downloadItem.mimeType);
                             break;
                         case "text/plain":
-                            contentType = ContentType.Documents; //int 1
-                            console.log("content hub type document " + downloadItem.mimeType);
-                            break;
+                        case "text/richtext":
                         case "application/pdf":
                             contentType = ContentType.Documents; //int 1
                             break;
+                        case "application/epub+zip":
+                            contentType = ContentType.Ebooks; //int ?
+                            console.log("CH type for ebook: " + ContentType.Ebooks)
+                            break;
                         default:
                             contentType = ContentType.All; //int -1
-                            console.log("content hub type default, mime type " + downloadItem.mimeType);
+                            console.log("content hub type default used for item of mime type " + downloadItem.mimeType);
                     }
 
                     filePath = downloadItem.downloadDirectory + "/" + downloadItem.downloadFileName
@@ -213,7 +233,12 @@ MainView {
                     while(downloadItem.state != 1) {
                         wait(100)
                     }
-                    mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {"url": filePath, "itemContentType": contentType, "handler": ContentHandler.Share})
+                    mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {
+                        "url": filePath, 
+                        "itemContentType": contentType, 
+                        "exportHandler": ContentHandler.Destination
+                        }
+                    )
                 }
                 // js waiter function
                 function wait(ms){

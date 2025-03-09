@@ -26,7 +26,7 @@ Page {
     property var activeTransfer
 
     property var url
-    property var handler
+    property var exportHandler
     property var itemContentType
 
     signal cancel()
@@ -51,23 +51,20 @@ Page {
         visible: parent.visible
         showTitle: false
         contentType: itemContentType
-        handler: ContentHandler.Share
+        handler: exportHandler
 
         onPeerSelected: {
             //peer.selectionType = ContentTransfer.Single
             picker.activeTransfer = peer.request()
             picker.activeTransfer.stateChanged.connect(function() {
                 if (picker.activeTransfer.state === ContentTransfer.InProgress) {
-                    //picker.activeTransfer.items = picker.activeTransfer.items[0].url = url;
                     picker.activeTransfer.items = [ resultComponent.createObject(parent, {"url": "file://" + picker.url}) ];
                     picker.activeTransfer.state = ContentTransfer.Charged;
                     Backend.removeDownload(picker.url)
                     pageStack.pop()
                 }
-
             })
         }
-
 
         onCancelPressed: {
             Backend.removeDownload()
