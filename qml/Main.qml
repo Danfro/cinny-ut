@@ -206,8 +206,8 @@ MainView {
                         case "video/mp4":
                         case "video/mpeg":
                         case "video/h264":
-                            contentType = ContentType.Video; //not defined -> use type all
-                            // contentType = ContentType.All; //int -1
+                            // contentType = ContentType.Video; //not defined -> use type all
+                            contentType = ContentType.All; //int -1
                             break;
                         case "text/vcard": //.vcf
                         case "text/x-vcard": //.vcf
