@@ -1,14 +1,16 @@
 diff --git a/src/app/components/message/content/AudioContent.tsx b/src/app/components/message/content/AudioContent.tsx
-index 71551b1..e7186f8 100644
+index 71551b1..30046ff 100644
 --- a/src/app/components/message/content/AudioContent.tsx
 +++ b/src/app/components/message/content/AudioContent.tsx
-@@ -1,5 +1,6 @@
+@@ -1,6 +1,7 @@
  /* eslint-disable jsx-a11y/media-has-caption */
  import React, { ReactNode, useCallback, useRef, useState } from 'react';
+-import { Badge, Chip, Icon, IconButton, Icons, ProgressBar, Spinner, Text, toRem } from 'folds';
 +import FileSaver from 'file-saver';
- import { Badge, Chip, Icon, IconButton, Icons, ProgressBar, Spinner, Text, toRem } from 'folds';
++import { Badge, Chip, Icon, IconButton, Button, Icons, ProgressBar, Spinner, Text, toRem } from 'folds';
  import { EncryptedAttachmentInfo } from 'browser-encrypt-attachment';
  import { Range } from 'react-range';
+ import { useMatrixClient } from '../../../hooks/useMatrixClient';
 @@ -90,6 +91,11 @@ export function AudioContent({
        loadSrc();
      }
@@ -21,19 +23,27 @@ index 71551b1..e7186f8 100644
  
    return renderMediaControl({
      after: (
-@@ -198,6 +204,15 @@ export function AudioContent({
+@@ -198,6 +204,23 @@ export function AudioContent({
              />
            )}
          />
-+        <IconButton
-+          variant="SurfaceVariant"
++        <Button
++          variant="Secondary"
 +          size="300"
++          fill="None"
 +          radii="Pill"
 +          onClick={handleDownload}
 +          aria-pressed={mute}
++          disabled={srcState.status === AsyncStatus.Loading}
++          before={
++            srcState.status === AsyncStatus.Loading ? (
++              <Spinner fill="Soft" size="100" variant="Secondary" />
++            ) : (
++              <Icon size="100" src={Icons.Download} />
++            )
++          }
 +        >
-+          <Icon size="50" src={Icons.Download} />
-+        </IconButton>
++        </Button>
        </>
      ),
      children: (
