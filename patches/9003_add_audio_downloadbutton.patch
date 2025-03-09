@@ -1,5 +1,5 @@
 diff --git a/src/app/components/message/content/AudioContent.tsx b/src/app/components/message/content/AudioContent.tsx
-index 71551b1..bb28fdc 100644
+index 71551b1..e7186f8 100644
 --- a/src/app/components/message/content/AudioContent.tsx
 +++ b/src/app/components/message/content/AudioContent.tsx
 @@ -1,5 +1,6 @@
@@ -21,10 +21,10 @@ index 71551b1..bb28fdc 100644
  
    return renderMediaControl({
      after: (
-@@ -154,6 +160,15 @@ export function AudioContent({
-     ),
-     rightControl: (
-       <>
+@@ -198,6 +204,15 @@ export function AudioContent({
+             />
+           )}
+         />
 +        <IconButton
 +          variant="SurfaceVariant"
 +          size="300"
@@ -34,6 +34,6 @@ index 71551b1..bb28fdc 100644
 +        >
 +          <Icon size="50" src={Icons.Download} />
 +        </IconButton>
-         <IconButton
-           variant="SurfaceVariant"
-           size="300"
+       </>
+     ),
+     children: (
