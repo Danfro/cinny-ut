@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2016 Stefano Verzegnassi
+ * Copyright (C) 2025  Danfro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License 3 as published by
@@ -14,7 +15,7 @@
  * along with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-import QtQuick 2.4
+import QtQuick 2.12
 import Lomiri.Components 1.3
 import Lomiri.Content 1.3
 import Backend 1.0
@@ -54,23 +55,19 @@ Page {
         anchors { fill: parent; topMargin: picker.header.height }
         visible: parent.visible
         showTitle: false
-        contentType: picker.contentType //ContentType.Pictures
+        contentType: picker.contentType
         handler: picker.handler //ContentHandler.Source
 
         onPeerSelected: {
-            peer.selectionType = ContentTransfer.Single
             picker.activeTransfer = peer.request()
             picker.activeTransfer.stateChanged.connect(function() {
                         if (picker.activeTransfer.state === ContentTransfer.InProgress) {
-                               console.log("In progress " + url);
                                picker.activeTransfer.items = picker.activeTransfer.items[0].url = url;
                                picker.activeTransfer.state = ContentTransfer.Charged;
                         }
                 if (picker.activeTransfer.state === ContentTransfer.Charged) {
-                               console.log("Charged");
-                     picker.imported(picker.activeTransfer.items[0].url)
-                               console.log(picker.activeTransfer.items[0].url)
-                     picker.activeTransfer = null
+                    picker.imported(picker.activeTransfer.items[0].url)
+                    picker.activeTransfer = null
                     pageStack.pop()
                 }
             })
@@ -78,7 +75,6 @@ Page {
 
 
         onCancelPressed: {
-            console.log("Cancelled")
             rejected()
             pageStack.pop()
         }

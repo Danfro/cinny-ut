@@ -1,8 +1,8 @@
 {
-    "name": "cinny.nitanmarcel",
+    "name": "cinny.danfro",
     "description": "Cinny is a Matrix client focusing primarily on simple, elegant and secure interface.",
     "architecture": "@CLICK_ARCH@",
-    "title": "Cinny",
+    "title": "Cinny UT",
     "hooks": {
         "cinny": {
             "apparmor": "cinny.apparmor",
@@ -16,6 +16,6 @@
             }
     },
     "version": "@CLICK_VERSION@",
-    "maintainer": "Marcel Alexandru Nitan <nitan.marcel@protonmail.com>",
+    "maintainer": "Danfro <one@frostinfo.de>",
     "framework" : "@CLICK_FRAMEWORK@"
 }

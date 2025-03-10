@@ -4,13 +4,12 @@ set -e
 
 REPO_NAME="cinny"
 REPO_URL="https://github.com/cinnyapp/cinny"
-REPO_BRANCH="dev"
 APP_TARGET="dist"
 
-REPO_VERSION="2.1.3"
+REPO_VERSION="4.5.1"
 CLICK_VERSION_PREFIX=""
 
-NODE_VERSION="v16.15.0"
+NODE_VERSION="22.2.0"
 
 
 walk () {
@@ -32,16 +31,23 @@ clone () {
 
 apply_patches () {
   echo "Patching cinny source code"
-  if [ -d "${ROOT}/patches" ]; then
-    for patch in ${ROOT}/patches/*.patch; do
-      echo "Applying $patch"
-      git apply ${patch}
-    done
+  patches_dir="${ROOT}/patches"
+  if [ -d "$patches_dir" ]; then
+    patch_files=("$patches_dir"/*.patch)
+    if [ -e "${patch_files[0]}" ]; then
+      for patch in "${patch_files[@]}"; do
+        echo "Applying $patch"
+        git apply "$patch"
+      done
+    else
+      echo "No patch files found in $patches_dir"
+    fi
+  else
+    echo "No patches directory found at $patches_dir"
   fi
   cp "${ROOT}/svg/cinny_512.svg" "${ROOT}/assets/logo.svg"
   cp "${ROOT}/svg/cinny_18.svg" "${ROOT}/cinny/public/res/svg/cinny.svg"
 }
-
 
 setup_node () {
   echo "Setting up node $NODE_VERSION"

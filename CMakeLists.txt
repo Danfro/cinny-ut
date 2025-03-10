@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.5.0)
 project(cinny C CXX)
 
 # Automatically create moc files
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_STANDARD 14)
+# set(CMAKE_CXX_STANDARD 14)
 
 include(GNUInstallDirs)
 
@@ -20,7 +20,7 @@ execute_process(
 set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
 
 set(PROJECT_NAME "cinny")
-set(FULL_PROJECT_NAME "cinny.nitanmarcel")
+set(FULL_PROJECT_NAME "cinny.danfro")
 set(DATA_DIR /)
 set(DESKTOP_FILE_NAME ${PROJECT_NAME}.desktop)
 

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2022  Marcel Alexandru Nitan
+ * Copyright (C) 2025  Danfro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +30,6 @@ public:
 
     Q_INVOKABLE QString getIndexPath();
     Q_INVOKABLE void removeDownload(QString path);
-    Q_INVOKABLE QString saveBase64File(QString fileBase64, QString fileName);
 };
 
 #endif

@@ -1,5 +1,5 @@
 [Desktop Entry]
-_Name=Cinny
+_Name=Cinny UT
 Exec=cinny %U
 Icon=assets/logo.svg
 Terminal=false

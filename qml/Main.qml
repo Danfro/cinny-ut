@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2022  Marcel Alexandru Nitan
+ * Copyright (C) 2025  Danfro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,9 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import QtQuick 2.7
+import QtQuick 2.12
 import QtQuick.Layouts 1.0
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.12
 import Lomiri.Components 1.3
 import Lomiri.Components.Popups 1.3
 import Lomiri.PushNotifications 0.1
@@ -25,16 +26,17 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import QtQml 2.12
-import QtWebEngine 1.8
+import QtWebEngine 1.11
 import QtWebChannel 1.0
 import Backend 1.0
+import Qt.labs.platform 1.0 as PF //for StandardPaths
 
 // Comment
 
 MainView {
     id : mainView
     objectName : 'mainView'
-    applicationName : 'cinny.nitanmarcel'
+    applicationName : 'cinny.danfro'
     automaticOrientation : true
     backgroundColor : "transparent"
     anchors {
@@ -53,12 +55,14 @@ MainView {
         }
     }
 
+    property string appDataPath: PF.StandardPaths.writableLocation(PF.StandardPaths.AppDataLocation).toString().replace("file://","")
+    property string appCachePath: PF.StandardPaths.writableLocation(PF.StandardPaths.CacheLocation).toString().replace("file://","")
 
     Settings {
         id: appSettings
         property string systemTheme: 'Ambiance'
         property string pushToken: ''
-        property string pushAppId: 'cinny.nitanmarcel_cinny'
+        property string pushAppId: 'cinny.danfro_cinny'
         property bool windowActive: true
     }
 
@@ -98,16 +102,8 @@ MainView {
                 webChannel: channel
                 settings.pluginsEnabled : true
                 settings.javascriptEnabled : true
-                profile : WebEngineProfile {
-                    id : webContext
-                    storageName : "Storage"
-                    persistentStoragePath : "/home/phablet/.local/share/cinny.nitanmarcel/QWebEngine"
-
-                    onDownloadRequested: function (download) {
-                         download.accept()
-                    }
-
-                }
+                profile : webContext
+                
                 onNewViewRequested : function (request) {
                     request.action = WebEngineNavigationRequest.IgnoreRequest
                     if (request.requestedUrl !== "ignore://") {
@@ -158,14 +154,103 @@ MainView {
 
                 signal matrixPushTokenChanged();
 
-                function handleDownload(fileBase64, fileName) {
-                    var filePath = Backend.saveBase64File(fileBase64, fileName)
-                    console.log("Downloaded to " + filePath)
-                    var downloadPage = mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {"url": filePath, "contentType": ContentType.All, "handler": ContentHandler.Destination})
-                }
-
                 function setTheme(themeName) {
                     setCurrentTheme(themeName)
+                }
+            }
+            WebEngineProfile {
+                id : webContext
+                property var filePath
+                property var contentType
+                storageName : "Storage"
+                persistentStoragePath : appDataPath + "/QWebEngine"
+                // set default downloadpath because typescript webdownload always saves to this folder
+                downloadPath: appCachePath  // downloads are saved only temporary and forwarded by content hub to the target location
+                cachePath: appCachePath
+                onDownloadRequested: function (downloadItem) {
+                    // https://doc.qt.io/qt-5/qml-qtwebengine-webenginedownloaditem.html
+
+                    // determine content hub type based on mime type
+                    // TODO: add more mime types, see dekko and here: https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types/Common_types
+                    var timestamp = new Date
+                    var audioBaseName = "Cinny soundfile " + Qt.formatDateTime(new Date(),"yyyy-MM-dd_hh-mm-ss")
+                    switch (downloadItem.mimeType) {
+                        case "image/jpeg": // no break between this and the next condition means both are treated the same
+                        case "image/png":
+                        case "image/gif":
+                        case "image/bmp":
+                        case "image/webp":
+                        case "image/svg":
+                        case "image/svg+xml":
+                            contentType = ContentType.Pictures; //int 2
+                            break
+                        // audio items currently do not provide a file name, just the internal url -> assign a default file name
+                        case "audio/mpeg":
+                            contentType = ContentType.Music; //int 3
+                            console.log("audio file name: " + downloadItem.downloadFileName)
+                            // 
+                            downloadItem.downloadFileName = audioBaseName + ".mp3"
+                            console.log("audio file name: " + downloadItem.downloadFileName)
+                            break;
+                        case "audio/ogg":
+                            contentType = ContentType.Music; //int 3
+                            console.log("audio file name: " + downloadItem.downloadFileName)
+                            // 
+                            downloadItem.downloadFileName = audioBaseName + ".ogg"
+                            console.log("audio file name: " + downloadItem.downloadFileName)
+                            break;
+                        case "audio/ogg":
+                            contentType = ContentType.Music; //int 3
+                            console.log("audio file name: " + downloadItem.downloadFileName)
+                            // 
+                            downloadItem.downloadFileName = "Cinny soundfile.ogg"
+                            console.log("audio file name: " + downloadItem.downloadFileName)
+                            break;
+                        case "video/mp4":
+                        case "video/mpeg":
+                        case "video/h264":
+                            // contentType = ContentType.Video; //not defined -> use type all
+                            contentType = ContentType.All; //int -1
+                            break;
+                        case "text/vcard": //.vcf
+                        case "text/x-vcard": //.vcf
+                            contentType = ContentType.Contacts; //int 4
+                            break;
+                        case "text/plain":
+                        case "text/richtext":
+                        case "text/markdown":
+                        case "application/pdf":
+                            contentType = ContentType.Documents; //int 1
+                            break;
+                        case "application/epub+zip":
+                            contentType = ContentType.Ebooks; //int ?
+                            console.log("CH type for ebook: " + ContentType.Ebooks)
+                            break;
+                        default:
+                            contentType = ContentType.All; //int -1
+                            console.log("content hub type default used for item of mime type " + downloadItem.mimeType);
+                    }
+
+                    filePath = downloadItem.downloadDirectory + "/" + downloadItem.downloadFileName
+                    downloadItem.accept()
+                    // wait until download is finished before processing the next command
+                    while(downloadItem.state != 1) {
+                        wait(100)
+                    }
+                    mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {
+                        "url": filePath, 
+                        "itemContentType": contentType, 
+                        "exportHandler": ContentHandler.Destination
+                        }
+                    )
+                }
+                // js waiter function
+                function wait(ms){
+                    var start = new Date().getTime();
+                    var end = start;
+                    while(end < start + ms) {
+                        end = new Date().getTime();
+                    }
                 }
             }
         }

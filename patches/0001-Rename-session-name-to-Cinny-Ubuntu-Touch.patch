@@ -1,0 +1,79 @@
+diff --git a/src/app/pages/auth/login/PasswordLoginForm.tsx b/src/app/pages/auth/login/PasswordLoginForm.tsx
+index 90c305d..bdb724d 100644
+--- a/src/app/pages/auth/login/PasswordLoginForm.tsx
++++ b/src/app/pages/auth/login/PasswordLoginForm.tsx
+@@ -133,7 +133,7 @@ export function PasswordLoginForm({ defaultUsername, defaultEmail }: PasswordLog
+         user: username,
+       },
+       password,
+-      initial_device_display_name: 'Cinny Web',
++      initial_device_display_name: 'Cinny Ubuntu Touch',
+     });
+   };
+ 
+@@ -151,7 +151,7 @@ export function PasswordLoginForm({ defaultUsername, defaultEmail }: PasswordLog
+         user: mxIdUsername,
+       },
+       password,
+-      initial_device_display_name: 'Cinny Web',
++      initial_device_display_name: 'Cinny Ubuntu Touch',
+     });
+   };
+   const handleEmailLogin = (email: string, password: string) => {
+@@ -163,7 +163,7 @@ export function PasswordLoginForm({ defaultUsername, defaultEmail }: PasswordLog
+         address: email,
+       },
+       password,
+-      initial_device_display_name: 'Cinny Web',
++      initial_device_display_name: 'Cinny Ubuntu Touch',
+     });
+   };
+ 
+diff --git a/src/app/pages/auth/login/TokenLogin.tsx b/src/app/pages/auth/login/TokenLogin.tsx
+index 761d5dc..caabe22 100644
+--- a/src/app/pages/auth/login/TokenLogin.tsx
++++ b/src/app/pages/auth/login/TokenLogin.tsx
+@@ -57,7 +57,7 @@ export function TokenLogin({ token }: TokenLoginProps) {
+     startLogin(baseUrl, {
+       type: 'm.login.token',
+       token,
+-      initial_device_display_name: 'Cinny Web',
++      initial_device_display_name: 'Cinny Ubuntu Touch',
+     });
+   }, [baseUrl, token, startLogin]);
+ 
+diff --git a/src/app/pages/auth/register/PasswordRegisterForm.tsx b/src/app/pages/auth/register/PasswordRegisterForm.tsx
+index 9f17342..88fa1ba 100644
+--- a/src/app/pages/auth/register/PasswordRegisterForm.tsx
++++ b/src/app/pages/auth/register/PasswordRegisterForm.tsx
+@@ -109,7 +109,7 @@ function RegisterUIAFlow({
+         auth: authDict,
+         password,
+         username,
+-        initial_device_display_name: 'Cinny Web',
++        initial_device_display_name: 'Cinny Ubuntu Touch',
+       });
+     },
+     [onRegister, formData]
+@@ -250,7 +250,7 @@ export function PasswordRegisterForm({
+       auth: {
+         session: authData.session,
+       },
+-      initial_device_display_name: 'Cinny Web',
++      initial_device_display_name: 'Cinny Ubuntu Touch',
+     });
+   };
+ 
+diff --git a/src/client/state/cons.js b/src/client/state/cons.js
+index 03fad8e..6242955 100644
+--- a/src/client/state/cons.js
++++ b/src/client/state/cons.js
+@@ -6,7 +6,7 @@ const cons = {
+     USER_ID: 'cinny_user_id',
+     BASE_URL: 'cinny_hs_base_url',
+   },
+-  DEVICE_DISPLAY_NAME: 'Cinny Web',
++  DEVICE_DISPLAY_NAME: 'Cinny Ubuntu Touch',
+   IN_CINNY_SPACES: 'in.cinny.spaces',
+   supportEventTypes: [
+     'm.room.create',

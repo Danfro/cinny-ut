@@ -32,6 +32,6 @@ jobs:
         # upload the build artifacts to github using the appname and version
         uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
         with:
-          name: cinny.nitanmarcel_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
+          name: cinny.danfro_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
           path: build/*/app/*.click
           if-no-files-found: error
