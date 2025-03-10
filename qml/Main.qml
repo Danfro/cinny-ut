@@ -172,6 +172,8 @@ MainView {
 
                     // determine content hub type based on mime type
                     // TODO: add more mime types, see dekko and here: https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types/Common_types
+                    var timestamp = new Date
+                    var audioBaseName = "Cinny soundfile " + Qt.formatDateTime(new Date(),"yyyy-MM-dd_hh-mm-ss")
                     switch (downloadItem.mimeType) {
                         case "image/jpeg": // no break between this and the next condition means both are treated the same
                         case "image/png":
@@ -186,14 +188,14 @@ MainView {
                             contentType = ContentType.Music; //int 3
                             console.log("audio file name: " + downloadItem.downloadFileName)
                             // 
-                            downloadItem.downloadFileName = "Cinny soundfile.mp3"
+                            downloadItem.downloadFileName = audioBaseName + ".mp3"
                             console.log("audio file name: " + downloadItem.downloadFileName)
                             break;
                         case "audio/ogg":
                             contentType = ContentType.Music; //int 3
                             console.log("audio file name: " + downloadItem.downloadFileName)
                             // 
-                            downloadItem.downloadFileName = "Cinny soundfile.ogg"
+                            downloadItem.downloadFileName = audioBaseName + ".ogg"
                             console.log("audio file name: " + downloadItem.downloadFileName)
                             break;
                         case "audio/ogg":
