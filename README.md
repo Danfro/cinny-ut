@@ -1,6 +1,13 @@
-# Cinny Click Packaging
+# Cinny
+"A Matrix client focusing primarily on simple, elegant and secure interface. The main goal is to have an instant messaging application that is easy on people and has a modern touch."
 
-Cinny is a Matrix client focusing primarily on simple, elegant and secure interface.
+[Cinny about Cinny](https://github.com/cinnyapp/cinny)
+
+## Cinny UT
+
+This is Cinny packaged for Ubuntu Touch with content hub integration and other changes to make it run as native matrix client. The original work has been done by @nitanmarcel. Many thanks for that! Now the app is maintained by Danfro.
+
+Cinny does not only allow to let you have matrix messages on your UT device. With bridges you can have many more messages available like Signal or Slack. Please check the internet for available matrix bridges.
 
 ## License
 
