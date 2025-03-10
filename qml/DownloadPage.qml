@@ -54,7 +54,6 @@ Page {
         handler: exportHandler
 
         onPeerSelected: {
-            //peer.selectionType = ContentTransfer.Single
             picker.activeTransfer = peer.request()
             picker.activeTransfer.stateChanged.connect(function() {
                 if (picker.activeTransfer.state === ContentTransfer.InProgress) {
