@@ -180,6 +180,7 @@ MainView {
                         case "image/gif":
                         case "image/bmp":
                         case "image/webp":
+                        case "image/svg":
                         case "image/svg+xml":
                             contentType = ContentType.Pictures; //int 2
                             break
@@ -217,6 +218,7 @@ MainView {
                             break;
                         case "text/plain":
                         case "text/richtext":
+                        case "text/markdown":
                         case "application/pdf":
                             contentType = ContentType.Documents; //int 1
                             break;
