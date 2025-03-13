@@ -94,9 +94,17 @@ MainView {
         Page {
             id : mainPage
             anchors.fill : parent
+
+            // bg
+            Rectangle {
+                color: theme.palette.normal.background
+                anchors.fill: parent
+            }
+
             WebEngineView {
                 id : webView
                 anchors.fill : parent
+                anchors.bottomMargin: bottomGesture.enableVisualHint ? bottomGesture.gestureAreaHeight : 0
                 focus : true
                 url : "http://localhost:19999/"
                 webChannel: channel
@@ -129,6 +137,13 @@ MainView {
                         window.showNormal()
                 }
 
+            }
+
+            BottomNavigationGesture {
+                id: bottomGesture
+
+                webview: webView
+                anchors.fill: parent
             }
 
             Connections {
