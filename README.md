@@ -24,10 +24,11 @@ The forked app in this repository maintained by me (Danfro).
 ## Building the app
 
 1. Install [Clickable](https://clickable-ut.dev/en/dev/index.html)
-2. Fork this repository with `git clone LINK_TO_REPO`
+2. Fork this repository with `git clone --recurse-submodules LINK_TO_REPO`
 3. Change into the cinny click packaging folder
 4. Attach an Ubuntu Touch device via usb to your machine
 4. Run `clickable` from the root folder of this repository to build and deploy the app on your attached device, or run `clickable desktop` to test the app on desktop. You can run `clickable log` for debugging information.
+5. To avoid rebuilding Cinny every time you build and run the app, you can temporarily comment out the line `prebuild: "bash ${ROOT}/prebuild.sh"` in `clickable.yaml`
 
 
 ## Patches
