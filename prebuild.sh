@@ -20,13 +20,30 @@ walk () {
 cleanup () {
   if [ -d "${ROOT}/${REPO_NAME}" ]; then
     echo "Cleaning up"
-    rm -rf "${ROOT}/${REPO_NAME}" "${ROOT}/target"
+    rm -rf "${ROOT}/target"
   fi
 }
 
 clone () {
+  local repo_dir="${ROOT}/${REPO_NAME}"
+
+  # check if the cinny repository already exists locally with the required version
+  if [ -d "$repo_dir" ]; then
+    # if the folder exists, check it has got the required version
+    echo "'$REPO_NAME' exists locally, going to check version"
+    pushd "$repo_dir" > /dev/null  # changes into the repo folder
+    local current_version=$(git describe --tags --abbrev=0)
+    if [ "$current_version" = "v$REPO_VERSION" ]; then
+      echo "Repository '$REPO_NAME' in version '$REPO_VERSION' exists locally, skip cloning"
+      popd > /dev/null # changes back to root folder
+      return 0
+    fi
+    rm -rf "${ROOT}/${REPO_NAME}"  # if version does not match, clear existing folder
+    popd > /dev/null # changes back to root folder
+  fi
+  # if its not present or the wrong version, clone it
   echo "Cloning source repo"
-  git clone "${REPO_URL}" "${ROOT}/${REPO_NAME}" --depth=1 --branch="v${REPO_VERSION}"
+  git clone "${REPO_URL}" "${ROOT}/${REPO_NAME}" --recurse-submodules --depth=1 --branch="v${REPO_VERSION}"
 }
 
 apply_patches () {
