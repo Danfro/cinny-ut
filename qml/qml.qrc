@@ -3,5 +3,9 @@
         <file>Main.qml</file>
         <file>DownloadPage.qml</file>
         <file>UploadPage.qml</file>
+        <file>SwipeGestureHandler.qml</file>
+        <file>HorizontalSwipeHandler.qml</file>
+        <file>BottomGestureActionIndicator.qml</file>
+        <file>BottomNavigationGesture.qml</file>
     </qresource>
 </RCC>
