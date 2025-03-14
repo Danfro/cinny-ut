@@ -1,0 +1,34 @@
+diff --git a/src/app/pages/client/direct/Direct.tsx b/src/app/pages/client/direct/Direct.tsx
+index 5e79921..70f93d2 100644
+--- a/src/app/pages/client/direct/Direct.tsx
++++ b/src/app/pages/client/direct/Direct.tsx
+@@ -47,6 +47,14 @@ import { markAsRead } from '../../../../client/action/notifications';
+ import { stopPropagation } from '../../../utils/keyboard';
+ import { useSetting } from '../../../state/hooks/settings';
+ import { settingsAtom } from '../../../state/settings';
++import {
++  StateEvent,
++} from '../../../../types/matrix/room';
++import {
++  EventTimeline,
++  MatrixEvent,
++  Room,
++} from 'matrix-js-sdk';
+ 
+ type DirectMenuProps = {
+   requestClose: () => void;
+@@ -82,6 +90,14 @@ const DirectMenu = forwardRef<HTMLDivElement, DirectMenuProps>(({ requestClose }
+   );
+ });
+ 
++export const getStateEvent = (
++  room: Room,
++  eventType: StateEvent,
++  stateKey = ''
++): MatrixEvent | undefined =>
++  room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType, stateKey) ??
++  undefined;
++
+ function DirectHeader() {
+   const [menuAnchor, setMenuAnchor] = useState<RectCords>();
+ 

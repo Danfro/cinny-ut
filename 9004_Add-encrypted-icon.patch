@@ -1,0 +1,28 @@
+diff --git a/src/app/features/room-nav/RoomNavItem.tsx b/src/app/features/room-nav/RoomNavItem.tsx
+index ffff0f4..cb12531 100644
+--- a/src/app/features/room-nav/RoomNavItem.tsx
++++ b/src/app/features/room-nav/RoomNavItem.tsx
+@@ -167,6 +167,7 @@ type RoomNavItemProps = {
+   selected: boolean;
+   linkPath: string;
+   muted?: boolean;
++  encrypted?: boolean;
+   showAvatar?: boolean;
+   direct?: boolean;
+ };
+@@ -176,6 +177,7 @@ export function RoomNavItem({
+   showAvatar,
+   direct,
+   muted,
++  encrypted,
+   linkPath,
+ }: RoomNavItemProps) {
+   const mx = useMatrixClient();
+@@ -259,6 +261,7 @@ export function RoomNavItem({
+                 <UnreadBadge highlight={unread.highlight > 0} count={unread.total} />
+               </UnreadBadgeCenter>
+             )}
++            {encrypted && <Icon size="50" src={Icons.Lock} />}
+             {muted && !optionsVisible && <Icon size="50" src={Icons.BellMute} />}
+           </Box>
+         </NavItemContent>
