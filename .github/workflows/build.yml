@@ -23,15 +23,27 @@ jobs:
           echo ARTIFACT_VERSION=$(cat prebuild.sh | grep "export REPO_VERSION=" | awk -F'"' '$0=$2')$(cat prebuild.sh | grep "export CLICK_VERSION_PREFIX=" | awk -F'"' '$0=$2') >> $GITHUB_ENV
       - name: Install clickable
         run: |
+          sudo apt install adb git python3 python3-pip python3-setuptools
           python3 -m pip install clickable-ut
+          echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
       - name: Build
         # build the app with clickable for all specified architectures
         run: |
           clickable build --arch ${{ matrix.arch }}
-      - name: Upload Artifacts
+      - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
         uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
         with:
-          name: cinny.danfro_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
+          name: cinny.danfro_${{ matrix.arch }}
+          # name: cinny.danfro_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
           path: build/*/app/*.click
           if-no-files-found: error
+      - name: Create github release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: build/*/app/*.click
+          # token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+      # - name: Release to OpenStore
+      #   run: clickable publish 
+
