@@ -28,8 +28,7 @@ The forked app in this repository maintained by me (Danfro).
 3. Change into the cinny click packaging folder
 4. Attach an Ubuntu Touch device via usb to your machine
 4. Run `clickable` from the root folder of this repository to build and deploy the app on your attached device, or run `clickable desktop` to test the app on desktop. You can run `clickable log` for debugging information.
-5. To avoid rebuilding Cinny every time you build and run the app, you can temporarily comment out the line `prebuild: "bash ${ROOT}/prebuild.sh"` in `clickable.yaml`
-
+5. When only modifying the QML/UT part of the app, you can avoid rebuilding Cinny every time you build and run the app by temporarily commenting out the line `prebuild: "bash ${ROOT}/prebuild.sh"` in `clickable.yaml`
 
 ## Patches
 
