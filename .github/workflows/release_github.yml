@@ -13,6 +13,13 @@ on:
 
 # define the build job
 jobs:
+  set-pre-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cejaramillof/set-pre-release@latest
+        with:
+          keywords: |
+            RC
   build:
     strategy:
       matrix:
