@@ -1,0 +1,67 @@
+# this file will build the app, create a downloadable artifact, publish the app to OpenStore and create a release with the build app as asset
+name: Clickable build, publish and release
+
+on:
+  # start the script when a tag is pushed
+  # format v1.2.3(.4)(addition) with values in brackets being optional
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+(.[0-9]+)?'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# define the build job
+jobs:
+  build:
+    strategy:
+      matrix:
+        arch: [amd64, arm64, armhf]
+        appname: [cinny.danfro]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4 # here @latest doesn't work, specific version v4 or above
+        with:
+          submodules: 'true'
+      - name: Parse version
+        run: |
+          echo ARTIFACT_VERSION=$(cat prebuild.sh | grep "export REPO_VERSION=" | awk -F'"' '$0=$2')$(cat prebuild.sh | grep "export CLICK_VERSION_PREFIX=" | awk -F'"' '$0=$2') >> $GITHUB_ENV
+      - name: Install clickable
+        run: |
+          sudo apt install adb git python3 python3-pip python3-setuptools
+          python3 -m pip install clickable-ut
+          echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
+      - name: Build
+        # build the app with clickable for all specified architectures
+        run: |
+          clickable build --arch ${{ matrix.arch }}
+      - name: Upload artifacts
+        # upload the build artifacts to github using the appname and version
+        uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
+        with:
+          name: ${{ matrix.appname }}_${{ matrix.arch }}
+          # name: cinny.danfro_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
+          path: build/*/app/*.click
+          if-no-files-found: error
+      - name: Publish to Open Store
+        # if a tag has been pushed, publish to OpenStore using the API key specified as Github secret with the last commit message (=changelog) as content
+        env:
+          OPENSTORE_KEY: ${{ secrets.OPENSTORE_KEY }}
+          CHANGELOG: $(git log -1 --pretty=%B | head -1) # grab the last commit message as changelog
+        run: clickable publish ${CHANGELOG} --apikey ${OPENSTORE_KEY}
+      - name: Create Release
+        # if a tag has been pushed, create a release with the last commit message (=changelog) as content
+        id: create_release
+        uses: softprops/action-gh-release@v2 # here @latest doesn't work, specific version v2 or above
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          CHANGELOG: $(git log -1 --pretty=%B | head -1) # grab the last commit message as changelog
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: ${CHANGELOG}
+          draft: false
+          prerelease: false
+          files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
+          fail_on_unmatched_files: false
