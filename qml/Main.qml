@@ -64,6 +64,8 @@ MainView {
         property string pushToken: ''
         property string pushAppId: 'cinny.danfro_cinny'
         property bool windowActive: true
+        property bool bottomBarIsActive: true
+        property bool visualHintIsActive: true
     }
 
     Component.onCompleted: function () {
@@ -111,7 +113,7 @@ MainView {
                 settings.pluginsEnabled : true
                 settings.javascriptEnabled : true
                 profile : webContext
-                
+
                 onNewViewRequested : function (request) {
                     request.action = WebEngineNavigationRequest.IgnoreRequest
                     if (request.requestedUrl !== "ignore://") {
@@ -141,6 +143,7 @@ MainView {
 
             BottomNavigationGesture {
                 id: bottomGesture
+                enabled: appSettings.bottomBarIsActive
 
                 webview: webView
                 anchors.fill: parent
@@ -171,6 +174,16 @@ MainView {
 
                 function setTheme(themeName) {
                     setCurrentTheme(themeName)
+                }
+
+                function toggleBottomBar(value) {
+                    bottomGesture.enabled = value
+                    appSettings.bottomBarIsActive = value
+                }
+
+                function toggleDisplayHint(value) {
+                    bottomGesture.enableVisualHint = value
+                    appSettings.visualHintIsActive = value
                 }
             }
             WebEngineProfile {

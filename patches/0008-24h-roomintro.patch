@@ -1,0 +1,38 @@
+diff --git a/src/app/components/room-intro/RoomIntro.tsx b/src/app/components/room-intro/RoomIntro.tsx
+index 9e1a4f1..1570f07 100644
+--- a/src/app/components/room-intro/RoomIntro.tsx
++++ b/src/app/components/room-intro/RoomIntro.tsx
+@@ -8,13 +8,15 @@ import { getMemberDisplayName, getStateEvent } from '../../utils/room';
+ import { useMatrixClient } from '../../hooks/useMatrixClient';
+ import { getMxIdLocalPart, mxcUrlToHttp } from '../../utils/matrix';
+ import { AsyncStatus, useAsyncCallback } from '../../hooks/useAsyncCallback';
+-import { timeDayMonthYear, timeHourMinute } from '../../utils/time';
++import { timeDayMonthYear, timeHourMinute12, timeHourMinute24 } from '../../utils/time';
+ import { useRoomNavigate } from '../../hooks/useRoomNavigate';
+ import { RoomAvatar } from '../room-avatar';
+ import { nameInitials } from '../../utils/common';
+ import { useRoomAvatar, useRoomName, useRoomTopic } from '../../hooks/useRoomMeta';
+ import { mDirectAtom } from '../../state/mDirectList';
+ import { useMediaAuthentication } from '../../hooks/useMediaAuthentication';
++import { useSetting } from '../../state/hooks/settings';
++import { settingsAtom } from '../../state/settings';
+ 
+ export type RoomIntroProps = {
+   room: Room;
+@@ -42,6 +44,7 @@ export const RoomIntro = as<'div', RoomIntroProps>(({ room, ...props }, ref) =>
+   const [prevRoomState, joinPrevRoom] = useAsyncCallback(
+     useCallback(async (roomId: string) => mx.joinRoom(roomId), [mx])
+   );
++  const [useTwelveHourFormat] = useSetting(settingsAtom, 'useTwelveHourFormat');
+ 
+   return (
+     <Box direction="Column" grow="Yes" gap="500" {...props} ref={ref}>
+@@ -67,7 +70,7 @@ export const RoomIntro = as<'div', RoomIntroProps>(({ room, ...props }, ref) =>
+             <Text size="T200" priority="300">
+               {'Created by '}
+               <b>@{creatorName}</b>
+-              {` on ${timeDayMonthYear(ts)} ${timeHourMinute(ts)}`}
++              {` on ${timeDayMonthYear(ts)} ${useTwelveHourFormat === true ? timeHourMinute12(ts) : timeHourMinute24(ts)}`}
+             </Text>
+           )}
+         </Box>

@@ -4,7 +4,7 @@ import Lomiri.Components 1.3
 Item {
     id: root
 
-    property bool enableVisualHint: true
+    property bool enableVisualHint: appSettings.visualHintIsActive
     property var webview
     property alias gestureAreaHeight: bottomBackForwardHandle.height
 

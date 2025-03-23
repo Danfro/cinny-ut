@@ -1,0 +1,30 @@
+diff --git a/src/app/state/settings.ts b/src/app/state/settings.ts
+index 9d97919..dcaf00b 100644
+--- a/src/app/state/settings.ts
++++ b/src/app/state/settings.ts
+@@ -35,6 +35,10 @@ export interface Settings {
+   isNotificationSounds: boolean;
+ 
+   developerTools: boolean;
++
++  useTwelveHourFormat: boolean;
++  enableBottomGesture: boolean;
++  displayBottomGestureHint: boolean;
+ }
+ 
+ const defaultSettings: Settings = {
+@@ -61,9 +65,13 @@ const defaultSettings: Settings = {
+   showHiddenEvents: false,
+ 
+   showNotifications: true,
+-  isNotificationSounds: true,
++  isNotificationSounds: false,
+ 
+   developerTools: false,
++
++  useTwelveHourFormat: true,
++  enableBottomGesture: true,
++  displayBottomGestureHint: true,
+ };
+ 
+ export const getSettings = () => {

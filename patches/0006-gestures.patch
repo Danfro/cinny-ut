@@ -1,0 +1,108 @@
+diff --git a/src/app/features/settings/general/General.tsx b/src/app/features/settings/general/General.tsx
+index 569cd41..b06b903 100644
+--- a/src/app/features/settings/general/General.tsx
++++ b/src/app/features/settings/general/General.tsx
+@@ -281,8 +281,9 @@ function PageZoomInput() {
+   };
+ 
+   return (
++    <Box gap="100" alignItems="Center">
+     <Input
+-      style={{ width: toRem(100) }}
++      style={{ width: toRem(75) }}
+       variant={pageZoom === parseInt(currentZoom, 10) ? 'Secondary' : 'Success'}
+       size="300"
+       radii="300"
+@@ -292,9 +293,10 @@ function PageZoomInput() {
+       value={currentZoom}
+       onChange={handleZoomChange}
+       onKeyDown={handleZoomEnter}
+-      after={<Text size="T300">%</Text>}
+       outlined
+     />
++    <Text size="T300">%</Text>
++    </Box>
+   );
+ }
+ 
+@@ -341,6 +343,49 @@ function Appearance() {
+   );
+ }
+ 
++function Gestures() {
++  const [enableBottomGesture, setEnableBottomGesture] = useSetting(settingsAtom, 'enableBottomGesture');
++  const [displayBottomGestureHint, setDisplayBottomGestureHint] = useSetting(settingsAtom, 'displayBottomGestureHint');
++
++  const handleBottomGestureChange = (value: boolean) => {
++    setEnableBottomGesture(value);
++    QML.toggleBottomBar(value);
++    if (value === false) {
++        // if the bottom gesture is turned off, also turn off the gesture hint
++        setDisplayBottomGestureHint(false);
++        QML.toggleDisplayHint(false);
++    }
++  };
++
++  const handleDisplayHintChange = (value: boolean) => {
++    setDisplayBottomGestureHint(value);
++    QML.toggleDisplayHint(value);
++  };
++
++  return (
++    <Box direction="Column" gap="100">
++      <Text size="L400">Gestures</Text>
++      <SequenceCard
++        className={SequenceCardStyle}
++        variant="SurfaceVariant"
++        direction="Column"
++        gap="400"
++      >
++        <SettingTile
++          title="Bottom Navigation Gesture"
++          description="Enable bottom gesture to swipe left or right for navigating backward and forward."
++          after={<Switch variant="Primary" value={enableBottomGesture} onChange={handleBottomGestureChange} />}
++        />
++        <SettingTile
++          title="Bar Indicator"
++          description="Enable visual indicator bar for bottom gesture."
++          after={<Switch variant="Primary" value={displayBottomGestureHint} onChange={handleDisplayHintChange} />}
++        />
++      </SequenceCard>
++    </Box>
++  );
++}
++
+ function Editor() {
+   const [enterForNewline, setEnterForNewline] = useSetting(settingsAtom, 'enterForNewline');
+   const [isMarkdown, setIsMarkdown] = useSetting(settingsAtom, 'isMarkdown');
+@@ -526,6 +571,7 @@ function Messages() {
+   const [urlPreview, setUrlPreview] = useSetting(settingsAtom, 'urlPreview');
+   const [encUrlPreview, setEncUrlPreview] = useSetting(settingsAtom, 'encUrlPreview');
+   const [showHiddenEvents, setShowHiddenEvents] = useSetting(settingsAtom, 'showHiddenEvents');
++  const [useTwelveHourFormat, setUseTwelveHourFormat] = useSetting(settingsAtom, 'useTwelveHourFormat');
+ 
+   return (
+     <Box direction="Column" gap="100">
+@@ -592,6 +638,14 @@ function Messages() {
+           }
+         />
+       </SequenceCard>
++      <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
++        <SettingTile
++          title="Use 12h am/pm format for timestamps"
++          after={
++            <Switch variant="Primary" value={useTwelveHourFormat} onChange={setUseTwelveHourFormat} />
++          }
++        />
++      </SequenceCard>
+     </Box>
+   );
+ }
+@@ -621,6 +675,7 @@ export function General({ requestClose }: GeneralProps) {
+           <PageContent>
+             <Box direction="Column" gap="700">
+               <Appearance />
++              <Gestures />
+               <Editor />
+               <Messages />
+             </Box>

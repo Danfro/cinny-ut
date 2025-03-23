@@ -1,0 +1,14 @@
+diff --git a/src/app/utils/time.ts b/src/app/utils/time.ts
+index 3ee6720..3c67691 100644
+--- a/src/app/utils/time.ts
++++ b/src/app/utils/time.ts
+@@ -9,7 +9,8 @@ export const today = (ts: number): boolean => dayjs(ts).isToday();
+ 
+ export const yesterday = (ts: number): boolean => dayjs(ts).isYesterday();
+ 
+-export const timeHourMinute = (ts: number): string => dayjs(ts).format('hh:mm A');
++export var timeHourMinute12 = (ts: number): string => dayjs(ts).format('hh:mm A');
++export var timeHourMinute24 = (ts: number): string => dayjs(ts).format('HH:mm');
+ 
+ export const timeDayMonYear = (ts: number): string => dayjs(ts).format('D MMM YYYY');
+ 
