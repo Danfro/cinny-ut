@@ -13,13 +13,6 @@ on:
 
 # define the build job
 jobs:
-  set-pre-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: cejaramillof/set-pre-release@latest
-        with:
-          keywords: |
-            RC
   build:
     strategy:
       matrix:
@@ -69,6 +62,6 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: ${CHANGELOG}
           draft: false
-          prerelease: false
+          prerelease: true
           files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
           fail_on_unmatched_files: false
