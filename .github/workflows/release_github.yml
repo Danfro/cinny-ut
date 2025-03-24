@@ -1,5 +1,5 @@
 # this file will build the app, create a downloadable artifact, publish the app to OpenStore and create a release with the build app as asset
-name: Clickable build, publish and release
+name: Clickable build and release
 
 on:
   # start the script when a tag is pushed ending with RC (no underline before RC, that will fail linting)
