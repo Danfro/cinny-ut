@@ -30,11 +30,13 @@ clone () {
   # check if the cinny repository already exists locally with the required version
   if [ -d "$repo_dir" ]; then
     # if the folder exists, check it has got the required version
-    echo "'$REPO_NAME' exists locally, going to check version"
+    echo "'$REPO_NAME' exists locally in '$repo_dir', going to check version"
     pushd "$repo_dir" > /dev/null  # changes into the repo folder
     local current_version=$(git describe --tags --abbrev=0)
     if [ "$current_version" = "v$REPO_VERSION" ]; then
       echo "Repository '$REPO_NAME' in version '$REPO_VERSION' exists locally, skip cloning"
+      echo "now clearing all unstaged changes"
+      git checkout . # undo all unstaged changes so patches are applied freshly
       popd > /dev/null # changes back to root folder
       return 0
     fi
