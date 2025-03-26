@@ -1,4 +1,4 @@
-name: Clickable Build
+name: Build only
 
 on:
   # start the script when code is pushed to main branch
