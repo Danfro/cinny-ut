@@ -1,5 +1,5 @@
 # this file will build the app, create a downloadable artifact, publish the app to OpenStore and create a release with the build app as asset
-name: Clickable build and release
+name: build and github release
 
 on:
   # start the script when a tag is pushed ending with RC (no underline before RC, that will fail linting)
@@ -44,14 +44,8 @@ jobs:
           # name: cinny.danfro_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
           path: build/*/app/*.click
           if-no-files-found: error
-      - name: Publish to Open Store
-        # if a tag has been pushed, publish to OpenStore using the API key specified as Github secret with the last commit message (=changelog) as content
-        env:
-          OPENSTORE_KEY: ${{ secrets.OPENSTORE_KEY }}
-          CHANGELOG: $(git log -1 --pretty=%B | head -1) # grab the last commit message as changelog
-        run: clickable publish ${CHANGELOG} --apikey ${OPENSTORE_KEY}
       - name: Create Release
-        # if a tag has been pushed, create a release with the last commit message (=changelog) as content
+        # create a release with the last commit message (=changelog) as content
         id: create_release
         uses: softprops/action-gh-release@v2 # here @latest doesn't work, specific version v2 or above
         env:
