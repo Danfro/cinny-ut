@@ -40,12 +40,12 @@ clone () {
       popd > /dev/null # changes back to root folder
       return 0
     fi
-    rm -rf "${ROOT}/${REPO_NAME}"  # if version does not match, clear existing folder
+    rm -rf "$repo_dir"  # if version does not match, clear existing folder
     popd > /dev/null # changes back to root folder
   fi
   # if its not present or the wrong version, clone it
   echo "Cloning source repo"
-  git clone "${REPO_URL}" "${ROOT}/${REPO_NAME}" --recurse-submodules --depth=1 --branch="v${REPO_VERSION}"
+  git clone "${REPO_URL}" "$repo_dir" --recurse-submodules --depth=1 --branch="v${REPO_VERSION}"
 }
 
 apply_patches () {
