@@ -11,7 +11,6 @@ CLICK_VERSION_PREFIX=".2RC"
 
 NODE_VERSION="22.2.0"
 NVM_DIR="${HOME}/.nvm"
-NPM="$NVM_DIR/versions/node/v$NODE_VERSION/bin/npm"
 
 walk () {
   echo "Entering $1"
@@ -82,8 +81,8 @@ setup_node () {
 
 build () {
   echo "Building cinny"
-  $NPM install
-  $NPM run build
+  npm install
+  npm run build
 }
 
 package () {
