@@ -10,7 +10,7 @@ REPO_VERSION="4.5.1"
 CLICK_VERSION_PREFIX=".2RC"
 
 NODE_VERSION="22.2.0"
-
+NVM_DIR="${HOME}/.nvm"
 
 walk () {
   echo "Entering $1"
@@ -69,11 +69,14 @@ apply_patches () {
 }
 
 setup_node () {
-  echo "Setting up node $NODE_VERSION"
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-  export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-  nvm install $NODE_VERSION
+  if [ ! -d $NVM_DIR ]; then
+    echo "Setting up node $NODE_VERSION"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+    nvm install $NODE_VERSION
+  else
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+  fi
 }
 
 build () {
