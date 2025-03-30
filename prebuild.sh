@@ -10,6 +10,7 @@ REPO_VERSION="4.5.1"
 CLICK_VERSION_PREFIX=".2RC"
 
 NODE_VERSION="22.2.0"
+NVM_VERSION=0.40.2
 NVM_DIR="${HOME}/.nvm"
 
 walk () {
@@ -71,7 +72,7 @@ apply_patches () {
 setup_node () {
   if [ ! -d $NVM_DIR ]; then
     echo "Setting up node $NODE_VERSION"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+    curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh" | bash
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
     nvm install $NODE_VERSION
   else
