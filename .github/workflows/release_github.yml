@@ -50,12 +50,12 @@ jobs:
         uses: softprops/action-gh-release@v2 # here @latest doesn't work, specific version v2 or above
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-          CHANGELOG: $(git log -1 --pretty=%B | head -1) # grab the last commit message as changelog
+          CHANGELOG: "${{ github.event.head_commit.message }}" # grab the last commit message as changelog
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: ${CHANGELOG}
           draft: false
-          prerelease: true
-          files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
+          prerelease: false
+          files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}
           fail_on_unmatched_files: false
