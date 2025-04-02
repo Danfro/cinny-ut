@@ -7,8 +7,15 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+# define the build job
+# only build if
+# a) the keyword "run_ci" is part of the commit message
+# b) no tag was pushed, because with a pushed tag another workflow is tiggered
 jobs:
   build:
+    if: |
+       "contains(github.event.head_commit.message,'run_ci')" &&
+        github.event.head_commit.tag == ''
     strategy:
       matrix:
         arch: [amd64, arm64, armhf]
