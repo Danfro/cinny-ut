@@ -30,6 +30,17 @@ The forked app in this repository maintained by me (Danfro).
 4. Run `clickable --clean` from the root folder of this repository to build and deploy the app on your attached device, or run `clickable desktop` to test the app on desktop. You can run `clickable log` for debugging information.
 5. When only modifying the QML/UT part of the app, you can avoid rebuilding Cinny every time you build and run the app by temporarily commenting out the line `prebuild: "bash ${ROOT}/prebuild.sh"` in `clickable.yaml`
 
+The build process does download and install
+- nvm
+- node
+- cinny source
+
+Doing all three steps every time cinny-ut is build is quite cumbersome. To avoid this, the `prebuild.sh` script has been designed to allow using locally present copies of the three.
+
+- `nvm` needs to be installed into the `cinny-ut/nvm` subfolder, get it [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
+- `nodejs` (aka `npm`) needs to be installed into the `cinny-ut/npm` subfolder, get it [here](https://nodejs.org/en/download), generally you need the *node_x64* architecture when downloading a prebuild package
+- cinny source needs to be in the `cinny-ut/cinny` subfolder, this can be cloned from their github with `git clone https://github.com/cinnyapp/cinny cinny --recurse-submodules --depth=1 --branch="v4.6.0"`
+
 ## Patches
 
 For UT integration several patches are applied. Those are located in the `/patches` folder. Please see the [patch description](/patches/patch_description.md) for details.
