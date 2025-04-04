@@ -16,106 +16,104 @@ NVM_VERSION=0.40.2
 NVM_DIR="${HOME}/.nvm"
 
 walk () {
-  echo "Entering $1"
-  cd $1
+    echo "Entering $1"
+    cd $1
 }
 
 cleanup () {
-  if [ -d "${ROOT}/${REPO_NAME}" ]; then
-    echo "Cleaning up"
-    rm -rf "${ROOT}/target"
-  fi
+    if [ -d "${ROOT}/${REPO_NAME}" ]; then
+        echo "Cleaning up"
+        rm -rf "${ROOT}/target"
+    fi
 }
 
 clone () {
-  # check if the cinny repository already exists locally with the required version
-  if [ -d "${REPO_DIR}" ]; then
-    pushd "${REPO_DIR}" > /dev/null  # changes into the repo folder
-    local current_version=$(git describe --tags --abbrev=0)
+    # check if the cinny repository already exists locally with the required version
+    if [ -d "${REPO_DIR}" ]; then
+        pushd "${REPO_DIR}" > /dev/null  # changes into the repo folder
+        local current_version=$(git describe --tags --abbrev=0)
     if [ "$current_version" = "v$REPO_VERSION" ]; then
-      echo "Repository '$REPO_NAME' in version '$REPO_VERSION' exists locally, skip cloning"
-      echo "now clearing all unstaged changes"
-      git checkout . # undo all unstaged changes so patches are applied freshly
-      popd > /dev/null # changes back to root folder
-      return 0
+        echo "Repository '$REPO_NAME' in version '$REPO_VERSION' exists locally, skip cloning"
+        echo "now clearing all unstaged changes"
+        git checkout . # undo all unstaged changes so patches are applied freshly
+        popd > /dev/null # changes back to root folder
+        return 0
     fi
-    rm -rf "${REPO_DIR}"  # if version does not match, clear existing folder
-    popd > /dev/null # changes back to root folder
-  fi
-  # if its not present or the wrong version, clone it
-  echo "Cloning source repo"
-  git clone "${REPO_URL}" "${REPO_DIR}" --recurse-submodules --depth=1 --branch="v${REPO_VERSION}"
+        rm -rf "${REPO_DIR}"  # if version does not match, clear existing folder
+        popd > /dev/null # changes back to root folder
+    fi
+    # if its not present or the wrong version, clone it
+    echo "Cloning source repo"
+    git clone "${REPO_URL}" "${REPO_DIR}" --recurse-submodules --depth=1 --branch="v${REPO_VERSION}"
 }
 
 apply_patches () {
-  echo "Patching cinny source code"
-  patches_dir="${ROOT}/patches"
-  if [ -d "$patches_dir" ]; then
-    patch_files=("$patches_dir"/*.patch)
+    echo "Patching cinny source code"
+    patches_dir="${ROOT}/patches"
+    if [ -d "$patches_dir" ]; then
+        patch_files=("$patches_dir"/*.patch)
     if [ -e "${patch_files[0]}" ]; then
-      for patch in "${patch_files[@]}"; do
+        for patch in "${patch_files[@]}"; do
         echo "Applying $patch"
         git apply "$patch"
-      done
+        done
     else
-      echo "No patch files found in $patches_dir"
+        echo "No patch files found in $patches_dir"
     fi
-  else
-    echo "No patches directory found at $patches_dir"
-  fi
-  cp "${ROOT}/svg/cinny_512.svg" "${ROOT}/assets/logo.svg"
-  cp "${ROOT}/svg/cinny_18.svg" "${ROOT}/cinny/public/res/svg/cinny.svg"
+    else
+        echo "No patches directory found at $patches_dir"
+    fi
+    cp "${ROOT}/svg/cinny_512.svg" "${ROOT}/assets/logo.svg"
+    cp "${ROOT}/svg/cinny_18.svg" "${ROOT}/cinny/public/res/svg/cinny.svg"
 }
 
 setup_node () {
-  echo "Setting up nvm $NVM_VERSION"
-  local nvmlocaldir="${ROOT}/nvm"
-  # check if nvm already exists locally
-  if [ -d "$nvmlocaldir" ]; then
-    pushd "$nvmlocaldir" > /dev/null  # changes into the nvm folder
-    local current_version=$(git describe --tags --abbrev=0)
-    if [ "$current_version" = "v$NVM_VERSION" ]; then
-      echo "nvm in version '$NVM_VERSION' exists locally, copying instead of downloading"
-      cp -r "$nvmlocaldir" $NVM_DIR
-      popd > /dev/null # changes back to root folder
+    echo "Setting up node $NODE_VERSION"
+    local npmlocaldir="${ROOT}/npm"
+    if [ -d "$npmlocaldir" ]; then
+        pushd "$npmlocaldir" > /dev/null  # changes into the nvm folder
+        # copy and setup first, otherwise hard to check the version number
+        cp -r "$npmlocaldir" $NPM_DIR
+        export PATH="$NPM_DIR/bin:$PATH" # Add the copied npm directory to the PATH
+        local current_version=$(node -v)
+        if [ "$current_version" = "v$NODE_VERSION" ]; then
+            echo "node in version '$NODE_VERSION' exists locally, using this instead of downloading"
+            popd > /dev/null # changes back to root folder
+        else
+            # otherwise download and install
+            echo "node locally present, but in version $current_version and required is $NODE_VERSION"
+            echo "installing node via nvm"
+            echo "Setting up nvm $NVM_VERSION"
+            local nvmlocaldir="${ROOT}/nvm"
+            # check if nvm already exists locally
+            if [ -d "$nvmlocaldir" ]; then
+                pushd "$nvmlocaldir" > /dev/null  # changes into the nvm folder
+                local current_version=$(git describe --tags --abbrev=0)
+                if [ "$current_version" = "v$NVM_VERSION" ]; then
+                    echo "nvm in version '$NVM_VERSION' exists locally, copying instead of downloading"
+                    cp -r "$nvmlocaldir" $NVM_DIR
+                    popd > /dev/null # changes back to root folder
+                else
+                    # otherwise download and install nvm
+                    echo "installing nvm"
+                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+                fi
+            else
+                # otherwise download and install
+                echo "installing nvm"
+                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+            fi
+            echo "initialize nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+            nvm install $NODE_VERSION
+            export PATH="$NPM_DIR/bin:$PATH" # Add the copied npm directory to the PATH
+        fi
     else
-      # otherwise download and install
-      echo "installing nvm"
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+        # otherwise download and install
+        echo "installing node"
+        nvm install $NODE_VERSION
+        export PATH="$NPM_DIR/bin:$PATH" # Add the copied npm directory to the PATH
     fi
-  else
-    # otherwise download and install
-    echo "installing nvm"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
-  fi
-  echo "initialize nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
-
-  echo "Setting up node $NODE_VERSION"
-  local npmlocaldir="${ROOT}/npm"
-  if [ -d "$npmlocaldir" ]; then
-    pushd "$npmlocaldir" > /dev/null  # changes into the nvm folder
-    # copy and setup first, otherwise hard to check the version number
-    cp -r "$npmlocaldir" $NPM_DIR
-    export PATH="$NPM_DIR/bin:$PATH" # Add the copied npm directory to the PATH
-    local current_version=$(node -v)
-    if [ "$current_version" = "v$NODE_VERSION" ]; then
-      echo "node in version '$NODE_VERSION' exists locally, using this instead of downloading"
-      popd > /dev/null # changes back to root folder
-    else
-      # otherwise download and install
-      echo "node locally present, but in version $current_version and required is $NODE_VERSION"
-      echo "installing node"
-      nvm install $NODE_VERSION
-      export PATH="$NPM_DIR/bin:$PATH" # Add the copied npm directory to the PATH
-    fi
-  else
-    # otherwise download and install
-    echo "installing node"
-    nvm install $NODE_VERSION
-    export PATH="$NPM_DIR/bin:$PATH" # Add the copied npm directory to the PATH
-  fi
 }
 
 build () {
