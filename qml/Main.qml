@@ -60,7 +60,7 @@ MainView {
 
     Settings {
         id: appSettings
-        property string systemTheme: 'Ambiance'
+        property string systemTheme: '' // empty means use system theme
         property string pushToken: ''
         property string pushAppId: 'cinny.danfro_cinny'
         property bool windowActive: true
