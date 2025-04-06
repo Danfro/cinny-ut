@@ -1,16 +1,8 @@
 diff --git a/src/client/initMatrix.ts b/src/client/initMatrix.ts
-index 7c774cf..990a7d1 100644
+index 7c774cf..d8f2d8a 100644
 --- a/src/client/initMatrix.ts
 +++ b/src/client/initMatrix.ts
-@@ -2,6 +2,7 @@ import { createClient, MatrixClient, IndexedDBStore, IndexedDBCryptoStore } from
- import { logger } from 'matrix-js-sdk/lib/logger';
- 
- import { cryptoCallbacks } from './state/secretStorageKeys';
-+import cons from './state/cons';
- 
- if (import.meta.env.PROD) {
-   logger.disableAll();
-@@ -44,11 +45,37 @@ export const initClient = async (session: Session): Promise<MatrixClient> => {
+@@ -44,10 +44,37 @@ export const initClient = async (session: Session): Promise<MatrixClient> => {
    return mx;
  };
  
@@ -18,38 +10,37 @@ index 7c774cf..990a7d1 100644
 -  await mx.startClient({
 -    lazyLoadMembers: true,
 -  });
--};
 +const setPush = (mx: MatrixClient, token: string, appId: string): Promise<void> => {
 +    const promises = [];
 +    promises.push(
-+      mx.setPusher({
-+        "app_display_name": cons.DEVICE_DISPLAY_NAME,
-+        "app_id": appId,
-+        "append": true,
-+        "data": {
-+          "url": "https://push.ubports.com:5003/_matrix/push/v1/notify"
++        mx.setPusher({
++        app_display_name: 'Cinny Ubuntu Touch',
++        app_id: appId,
++        append: true,
++        data: {
++            url: "https://push.ubports.com:5003/_matrix/push/v1/notify",
++            brand: 'Cinny',
 +        },
-+        "device_display_name": cons.DEVICE_DISPLAY_NAME,
-+        "lang": "en",
-+        "kind": "http",
-+        "profile_tag": "xxyyzz",
-+        "pushkey": token
-+      })
++        device_display_name: 'Cinny Ubuntu Touch',
++        lang: "de",
++        kind: "http",
++        profile_tag: "xxyyzz",
++        pushkey: token
++        })
 +    );
 +    promises.push(mx.setPushRuleEnabled('global', 'content', '.m.rule.contains_user_name', true));
 +    console.error("Set appID " + appId + "with token " + token);
 +    return Promise.all(promises).then(() => {});
-+  };
++    };
 +
-+  export const startClient = async (mx: MatrixClient) => {
++    export const startClient = async (mx: MatrixClient) => {
 +    await mx.startClient({
-+      lazyLoadMembers: true,
++        lazyLoadMembers: true,
 +    });
 +    await setPush(mx, QML.settings.pushToken, QML.settings.pushAppId);
 +    QML.matrixPushTokenChanged.connect(async function (token) {
-+      await setPush(mx, token, QML.settings.pushAppId)
++        await setPush(mx, token, QML.settings.pushAppId)
 +    });
-+  };
+ };
  
  export const clearCacheAndReload = async (mx: MatrixClient) => {
-   mx.stopClient();

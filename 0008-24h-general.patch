@@ -1,0 +1,27 @@
+diff --git a/src/app/features/settings/general/General.tsx b/src/app/features/settings/general/General.tsx
+index 569cd41..55f4de4 100644
+--- a/src/app/features/settings/general/General.tsx
++++ b/src/app/features/settings/general/General.tsx
+@@ -526,6 +526,7 @@ function Messages() {
+   const [urlPreview, setUrlPreview] = useSetting(settingsAtom, 'urlPreview');
+   const [encUrlPreview, setEncUrlPreview] = useSetting(settingsAtom, 'encUrlPreview');
+   const [showHiddenEvents, setShowHiddenEvents] = useSetting(settingsAtom, 'showHiddenEvents');
++  const [useTwelveHourFormat, setUseTwelveHourFormat] = useSetting(settingsAtom, 'useTwelveHourFormat');
+ 
+   return (
+     <Box direction="Column" gap="100">
+@@ -592,6 +593,14 @@ function Messages() {
+           }
+         />
+       </SequenceCard>
++      <SequenceCard className={SequenceCardStyle} variant="SurfaceVariant" direction="Column">
++        <SettingTile
++          title="Use 12h am/pm format for timestamps"
++          after={
++            <Switch variant="Primary" value={useTwelveHourFormat} onChange={setUseTwelveHourFormat} />
++          }
++        />
++      </SequenceCard>
+     </Box>
+   );
+ }
