@@ -7,29 +7,29 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cinny.danfro\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-06 22:39+0000\n"
-"PO-Revision-Date: 2025-03-08 21:56+0100\n"
+"POT-Creation-Date: 2025-04-08 14:44+0000\n"
+"PO-Revision-Date: 2025-04-08 20:53+0200\n"
+"Last-Translator: Daniel Frost <one@frostinfo.de>\n"
 "Language-Team: \n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: de\n"
+"X-Generator: Poedit 3.4.2\n"
 
-#: ../qml/DownloadPage.qml:35
+#: ../qml/DownloadPage.qml:36
 msgid "Save With"
 msgstr "Speichern mit"
 
-#: ../qml/DownloadPage.qml:40 ../qml/UploadPage.qml:42
+#: ../qml/DownloadPage.qml:41 ../qml/UploadPage.qml:43
 msgid "Back"
 msgstr "Zurück"
 
-#: ../qml/UploadPage.qml:37
+#: ../qml/UploadPage.qml:38
 msgid "Chose"
 msgstr "Auswählen"
 
 #: cinny.desktop.in.h:1
-msgid "Cinny"
-msgstr "Cinny"
+msgid "Cinny UT"
+msgstr "Cinny UT"
