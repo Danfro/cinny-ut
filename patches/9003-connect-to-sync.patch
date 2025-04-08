@@ -1,0 +1,13 @@
+diff --git a/src/app/pages/client/SyncStatus.tsx b/src/app/pages/client/SyncStatus.tsx
+index 9cd4b0b..4c1e94c 100644
+--- a/src/app/pages/client/SyncStatus.tsx
++++ b/src/app/pages/client/SyncStatus.tsx
+@@ -44,7 +44,7 @@ export function SyncStatus({ mx }: SyncStatusProps) {
+           alignItems="Center"
+           justifyContent="Center"
+         >
+-          <Text size="L400">Connecting...</Text>
++          <Text size="L400">Synchronizing...</Text>
+         </Box>
+         <Line variant="Success" size="300" />
+       </Box>
