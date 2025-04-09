@@ -32,7 +32,7 @@ jobs:
         run: echo "NODE_VERSION=$(grep -oP '(?<=NODE_VERSION=)[^ ]+' prebuild.sh)" >> $GITHUB_ENV
       - name: Set up Node.js environment
         run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh | bash
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           nvm install $NODE_VERSION
