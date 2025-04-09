@@ -68,11 +68,11 @@ apply_patches () {
 }
 
 setup_node () {
-    # Check if running in GitHub Actions, then skip this step, becaus node is installed in the workflow file
-    if [ "$GITHUB_ACTIONS" = "true" ]; then
-        echo "Running in GitHub Actions environment. Skipping Node.js setup."
-        return 0
-    fi
+    # # Check if running in GitHub Actions, then skip this step, becaus node is installed in the workflow file
+    # if [ "$GITHUB_ACTIONS" = "true" ]; then
+    #     echo "Running in GitHub Actions environment. Skipping Node.js setup."
+    #     return 0
+    # fi
     echo "Setting up node $NODE_VERSION"
     local npmlocaldir="${ROOT}/npm"
     if [ -d "$npmlocaldir" ]; then
@@ -101,12 +101,12 @@ setup_node () {
                 else
                     # otherwise download and install nvm
                     echo "installing nvm"
-                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash
                 fi
             else
                 # otherwise download and install
                 echo "installing nvm"
-                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash
             fi
             echo "initialize nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
@@ -114,7 +114,11 @@ setup_node () {
             export PATH="$NPM_DIR/bin:$PATH" # Add the copied npm directory to the PATH
         fi
     else
-        # otherwise download and install
+        # otherwise download and install nvm and node
+        echo "installing nvm"
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
         echo "installing node"
         nvm install $NODE_VERSION
         export PATH="$NPM_DIR/bin:$PATH" # Add the copied npm directory to the PATH
