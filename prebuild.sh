@@ -68,6 +68,11 @@ apply_patches () {
 }
 
 setup_node () {
+    # Check if running in GitHub Actions, then skip this step, becaus node is installed in the workflow file
+    if [ "$GITHUB_ACTIONS" = "true" ]; then
+        echo "Running in GitHub Actions environment. Skipping Node.js setup."
+        return 0
+    fi
     echo "Setting up node $NODE_VERSION"
     local npmlocaldir="${ROOT}/npm"
     if [ -d "$npmlocaldir" ]; then
