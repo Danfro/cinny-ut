@@ -54,8 +54,8 @@ jobs:
         # upload the build artifacts to github using the appname and version
         uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
         with:
-          name: ${{ matrix.appname }}_${{ matrix.arch }}
-          path: build/**/app/*.click
+          name: ${{ matrix.appname }}${{ matrix.arch }}
+          path: build/*/app/*.click
           if-no-files-found: error
       - name: Create Release
         # create a release with the last commit message (=changelog) as content
@@ -63,12 +63,11 @@ jobs:
         uses: softprops/action-gh-release@v2 # here @latest doesn't work, specific version v2 or above
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-          CHANGELOG: "${{ github.event.head_commit.message }}" # grab the last commit message as changelog
         with:
           tag_name: ${{ github.ref }}
           name: Release ${{ github.ref }}
-          body: ${CHANGELOG}
+          body: ${{ github.event.head_commit.message }} # grab the last commit message as changelog
           draft: false
           prerelease: true
-          files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}
+          files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.click
           fail_on_unmatched_files: false
