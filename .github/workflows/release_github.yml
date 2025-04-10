@@ -54,7 +54,7 @@ jobs:
         # upload the build artifacts to github using the appname and version
         uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
         with:
-          name: ${{ matrix.appname }}_${{ matrix.arch }}.zip
+          name: ${{ matrix.appname }}_${{ matrix.arch }}
           path: build/**/app/*.click
           if-no-files-found: error
       - name: Create Release
@@ -66,9 +66,9 @@ jobs:
           CHANGELOG: "${{ github.event.head_commit.message }}" # grab the last commit message as changelog
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          name: Release ${{ github.ref }}
           body: ${CHANGELOG}
           draft: false
-          prerelease: false
+          prerelease: true
           files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}
           fail_on_unmatched_files: false
