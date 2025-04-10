@@ -45,9 +45,7 @@ jobs:
           echo ARTIFACT_VERSION=$(cat prebuild.sh | grep "export REPO_VERSION=" | awk -F'"' '$0=$2')$(cat prebuild.sh | grep "export CLICK_VERSION_PREFIX=" | awk -F'"' '$0=$2') >> $GITHUB_ENV
       - name: Install clickable
         run: |
-          sudo apt install adb git python3 python3-pip python3-setuptools
           python3 -m pip install clickable-ut
-          echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
       - name: Build
         # build the app with clickable for all specified architectures
         run: |
@@ -56,8 +54,8 @@ jobs:
         # upload the build artifacts to github using the appname and version
         uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
         with:
-          name: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}
-          path: build/*/app/*.click
+          name: ${{ matrix.appname }}_${{ matrix.arch }}.zip
+          path: build/**/app/*.click
           if-no-files-found: error
       - name: Create Release
         # create a release with the last commit message (=changelog) as content
