@@ -42,7 +42,16 @@ jobs:
           echo "Node.js $(node -v) installed via nvm"
       - name: Parse version
         run: |
-          echo ARTIFACT_VERSION=$(cat prebuild.sh | grep "export REPO_VERSION=" | awk -F'"' '$0=$2')$(cat prebuild.sh | grep "export CLICK_VERSION_PREFIX=" | awk -F'"' '$0=$2') >> $GITHUB_ENV
+          REPO_VERSION=$(grep "export REPO_VERSION=" prebuild.sh | awk -F'"' '{print $2}')
+          CLICK_VERSION_PREFIX=$(grep "export CLICK_VERSION_PREFIX=" prebuild.sh | awk -F'"' '{print $2}')
+          echo "Extracted REPO_VERSION=$REPO_VERSION"
+          echo "Extracted CLICK_VERSION_PREFIX=$CLICK_VERSION_PREFIX"
+          echo ARTIFACT_VERSION="v${REPO_VERSION}${CLICK_VERSION_PREFIX}" >> $GITHUB_ENV
+          echo "Set ARTIFACT_VERSION=${REPO_VERSION}${CLICK_VERSION_PREFIX}"
+      - name: Debug ARTIFACT_VERSION
+        run: echo "ARTIFACT_VERSION=$ARTIFACT_VERSION"
+        env:
+          ARTIFACT_VERSION: ${{ env.ARTIFACT_VERSION }}
       - name: Install clickable
         run: |
           python3 -m pip install clickable-ut
@@ -69,5 +78,5 @@ jobs:
           body: ${{ github.event.head_commit.message }} # grab the last commit message as changelog
           draft: false
           prerelease: true
-          files: ${{ matrix.appname }}_$ARTIFACT_VERSION_${{ matrix.arch }}.click
+          files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.click
           fail_on_unmatched_files: false
