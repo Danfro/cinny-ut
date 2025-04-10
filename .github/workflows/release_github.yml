@@ -40,14 +40,12 @@ jobs:
           nvm install $NODE_VERSION
           nvm use $NODE_VERSION
           echo "Node.js $(node -v) installed via nvm"
-      - name: Parse version
+      - name: Set Artifact Version
         run: |
-          REPO_VERSION=$(grep "export REPO_VERSION=" prebuild.sh | awk -F'"' '{print $2}')
-          CLICK_VERSION_PREFIX=$(grep "export CLICK_VERSION_PREFIX=" prebuild.sh | awk -F'"' '{print $2}')
-          echo "Extracted REPO_VERSION=$REPO_VERSION"
-          echo "Extracted CLICK_VERSION_PREFIX=$CLICK_VERSION_PREFIX"
-          echo ARTIFACT_VERSION="v${REPO_VERSION}${CLICK_VERSION_PREFIX}" >> $GITHUB_ENV
-          echo "Set ARTIFACT_VERSION=${REPO_VERSION}${CLICK_VERSION_PREFIX}"
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          ARTIFACT_VERSION=${TAG_NAME#v}
+          echo "ARTIFACT_VERSION=$ARTIFACT_VERSION" >> $GITHUB_ENV
+          echo "Set ARTIFACT_VERSION=$ARTIFACT_VERSION"
       - name: Debug ARTIFACT_VERSION
         run: echo "ARTIFACT_VERSION=$ARTIFACT_VERSION"
         env:
