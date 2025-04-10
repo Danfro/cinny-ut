@@ -79,6 +79,5 @@ jobs:
           body: ${{ github.event.head_commit.message }} # grab the last commit message as changelog
           draft: false
           prerelease: true
-          path: build/*/app/*.click
           files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.click
           fail_on_unmatched_files: false
