@@ -60,24 +60,41 @@ jobs:
         # build the app with clickable for all specified architectures
         run: |
           clickable build --arch ${{ matrix.arch }}
-      - name: Upload artifacts
-        # upload the build artifacts to github using the appname and version
-        uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
+      # - name: Upload artifacts
+      #   # upload the build artifacts to github using the appname and version
+      #   uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
+      #   with:
+      #     name: ${{ matrix.appname }}_${{ matrix.arch }}
+      #     path: build/*/app/*.click
+      #     if-no-files-found: error
+  release:
+      needs: build  # Waits for all build jobs to finish
+      runs-on: ubuntu-latest
+      steps:
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.appname }}_${{ matrix.arch }}
-          path: build/*/app/*.click
-          if-no-files-found: error
+          name: ${{ matrix.architecture }}-build
+          path: ./build/output
+      - name: Check if release exists
+        id: check_release
+        run: |
+          if gh release view ${{ github.ref_name }} > /dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_ENV
+          else
+            echo "exists=false" >> $GITHUB_ENV
+          fi
       - name: Create Release
+        if: env.exists == 'false' # only proceed if release doesn't exist
         # create a release with the last commit message (=changelog) as content
-        id: create_release
-        uses: softprops/action-gh-release@v2 # here @latest doesn't work, specific version v2 or above
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          artifacts: |
+            arm64-build
+            amd64-build
+            x86-build
           body: ${{ github.event.head_commit.message }} # grab the last commit message as changelog
           draft: false
           prerelease: true
-          files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.click
-          fail_on_unmatched_files: false
