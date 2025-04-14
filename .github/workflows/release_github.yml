@@ -98,7 +98,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
-          artifacts: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.click
+          # artifacts: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.click
           body: ${{ github.event.head_commit.message }} # grab the last commit message as changelog
           draft: false
           prerelease: true
