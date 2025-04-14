@@ -85,6 +85,8 @@ jobs:
       #     if-no-files-found: error
       - name: Check if release exists
         id: check_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
           if gh release view ${{ github.ref_name }} --repo ${{ github.repository }} > /dev/null 2>&1; then
@@ -92,15 +94,13 @@ jobs:
           else
             echo "exists=false" >> $GITHUB_ENV
           fi
+
       - name: Create Release
-        if: env.exists == 'false' # only proceed if release doesn't exist
-        # create a release with the last commit message (=changelog) as content
+        if: env.exists == 'false' # Only proceed if release doesn't exist
         uses: actions/create-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
-          # artifacts: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.click
-          body: ${{ github.event.head_commit.message }} # grab the last commit message as changelog
+          body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
           draft: false
           prerelease: true
-          # token: ${{ secrets.GITHUB_TOKEN }}
