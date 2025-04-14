@@ -60,13 +60,13 @@ jobs:
         # build the app with clickable for all specified architectures
         run: |
           clickable build --arch ${{ matrix.arch }}
-      # - name: Upload artifacts
-      #   # upload the build artifacts to github using the appname and version
-      #   uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
-      #   with:
-      #     name: ${{ matrix.appname }}_${{ matrix.arch }}
-      #     path: build/*/app/*.click
-      #     if-no-files-found: error
+      - name: Upload artifacts
+        # upload the build artifacts to github using the appname and version
+        uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
+        with:
+          name: ${{ matrix.appname }}_${{ matrix.arch }}
+          path: build/*/app/*.click
+          if-no-files-found: error
   release:
       needs: build  # Waits for all build jobs to finish
       runs-on: ubuntu-latest
@@ -76,13 +76,13 @@ jobs:
       #   with:
       #     name: ${{ matrix.architecture }}-build
       #     path: ./build/output
-      - name: Upload artifacts
-        # upload the build artifacts to github using the appname and version
-        uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
-        with:
-          name: ${{ matrix.appname }}_${{ matrix.arch }}
-          path: /home/runner/work/cinny-ut/cinny-ut/build/*/app/*.click
-          if-no-files-found: error
+      # - name: Upload artifacts
+      #   # upload the build artifacts to github using the appname and version
+      #   uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
+      #   with:
+      #     name: ${{ matrix.appname }}_${{ matrix.arch }}
+      #     path: /home/runner/work/cinny-ut/cinny-ut/build/*/app/*.click
+      #     if-no-files-found: error
       - name: Check if release exists
         id: check_release
         run: |
