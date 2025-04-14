@@ -71,11 +71,18 @@ jobs:
       needs: build  # Waits for all build jobs to finish
       runs-on: ubuntu-latest
       steps:
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+      # - name: Upload Artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ${{ matrix.architecture }}-build
+      #     path: ./build/output
+      - name: Upload artifacts
+        # upload the build artifacts to github using the appname and version
+        uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
         with:
-          name: ${{ matrix.architecture }}-build
-          path: ./build/output
+          name: ${{ matrix.appname }}_${{ matrix.arch }}
+          path: build/*/app/*.click
+          if-no-files-found: error
       - name: Check if release exists
         id: check_release
         run: |
@@ -91,10 +98,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
-          artifacts: |
-            arm64-build
-            amd64-build
-            x86-build
+          artifacts: ${{ matrix.appname }}_${{ matrix.arch }}
           body: ${{ github.event.head_commit.message }} # grab the last commit message as changelog
           draft: false
           prerelease: true
