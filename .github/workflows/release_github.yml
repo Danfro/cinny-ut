@@ -85,6 +85,8 @@ jobs:
       #     if-no-files-found: error
       - name: Check if release exists
         id: check_release
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provide authentication for gh command
         run: |
           if gh release view ${{ github.ref_name }} > /dev/null 2>&1; then
             echo "exists=true" >> $GITHUB_ENV
