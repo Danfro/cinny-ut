@@ -102,3 +102,4 @@ jobs:
           body: ${{ github.event.head_commit.message }} # grab the last commit message as changelog
           draft: false
           prerelease: true
+          token: ${{ secrets.GITHUB_TOKEN }}
