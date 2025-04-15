@@ -94,8 +94,9 @@ jobs:
           else
             echo "exists=false" >> $GITHUB_ENV
           fi
-
       - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provide authentication for gh command
         if: env.exists == 'false' # Only proceed if release doesn't exist
         uses: actions/create-release@v1
         with:
