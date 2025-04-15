@@ -105,13 +105,15 @@ jobs:
           body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
           draft: false
           prerelease: true
+      - name: list File Paths
+        run: ls -l .build/*/app/
       - name: Upload Multiple Release Assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for file in .build/*/app/*.click; do
             echo "Uploading $file"
-            gh release upload ${{ steps.create_release.outputs.tag_name }} "$file"
+            gh release upload "${{ steps.create_release.outputs.tag_name }}" "$file"
           done
 
 
