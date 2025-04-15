@@ -83,20 +83,20 @@ jobs:
       #     name: ${{ matrix.appname }}_${{ matrix.arch }}
       #     path: /home/runner/work/cinny-ut/cinny-ut/build/*/app/*.click
       #     if-no-files-found: error
-      - name: Check if release exists
-        id: check_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-          if gh release view ${{ github.ref_name }} --repo ${{ github.repository }} > /dev/null 2>&1; then
-            echo "exists=true" >> $GITHUB_ENV
-          else
-            echo "exists=false" >> $GITHUB_ENV
-          fi
+      # - name: Check if release exists
+      #   id: check_release
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      #     if gh release view ${{ github.ref_name }} --repo ${{ github.repository }} > /dev/null 2>&1; then
+      #       echo "exists=true" >> $GITHUB_ENV
+      #     else
+      #       echo "exists=false" >> $GITHUB_ENV
+      #     fi
       - name: Create Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provide authentication for gh command
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: env.exists == 'false' # Only proceed if release doesn't exist
         uses: actions/create-release@v1
         with:
