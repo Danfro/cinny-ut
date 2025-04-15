@@ -97,7 +97,7 @@ jobs:
       - name: Create Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: env.exists == 'false' # Only proceed if release doesn't exist
+        # if: env.exists == 'false' # Only proceed if release doesn't exist
         uses: actions/create-release@v1
         with:
           tag_name: ${{ github.ref_name }}
