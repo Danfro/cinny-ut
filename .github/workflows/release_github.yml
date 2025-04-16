@@ -107,13 +107,25 @@ jobs:
           prerelease: true
       # - name: list File Paths
       #   run: ls -l .build/*/app/
-      - name: Upload Multiple Release Assets
+      # - name: Upload All Click Files
+      #   run: |
+      #     for file in /home/runner/work/cinny-ut/cinny-ut/build/x86_64-linux-gnu/app/*.click; do
+      #       echo "Uploading $file"
+      #       gh release upload "${{ steps.create_release.outputs.tag_name }}" "$file"
+      #     done
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release Asset
+        run: |
+          gh release upload "${{ steps.create_release.outputs.tag_name }}" \
+          /home/runner/work/cinny-ut/cinny-ut/build/x86_64-linux-gnu/app/cinny.danfro_4.6.0.1RC_amd64.click
+          gh release upload "${{ steps.create_release.outputs.tag_name }}" \
+          /home/runner/work/cinny-ut/cinny-ut/build/aarch64-linux-gnu/app/cinny.danfro_4.6.0.1RC_arm64.click
+          gh release upload "${{ steps.create_release.outputs.tag_name }}" \
+          /home/runner/work/cinny-ut/cinny-ut/build/arm-linux-gnueabihf/app/cinny.danfro_4.6.0.1RC_armhf.click
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          for file in /home/runner/work/cinny-ut/cinny-ut/build/*/app/*.click; do
-            echo "Uploading $file"
-            gh release upload "${{ steps.create_release.outputs.tag_name }}" "$file"
-          done
+
+
 
 
