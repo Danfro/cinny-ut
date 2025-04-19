@@ -4,12 +4,17 @@ name: build, publish and release
 on:
   # start the script when a tag is pushed
   # format v1.2.3(.4)(addition) with values in brackets being optional
+  # note: GitHub Actions does not support full regex in tag patterns; it uses simple glob patterns like *, ?, and [] instead.
+  # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+(.[0-9]+)?'
+      - 'v[0-9].[0-9].[0-9]+.[0-9]+'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 # define the build job
 jobs:
@@ -38,14 +43,19 @@ jobs:
           nvm install $NODE_VERSION
           nvm use $NODE_VERSION
           echo "Node.js $(node -v) installed via nvm"
-      - name: Parse version
+      - name: Set Artifact Version
         run: |
-          echo ARTIFACT_VERSION=$(cat prebuild.sh | grep "export REPO_VERSION=" | awk -F'"' '$0=$2')$(cat prebuild.sh | grep "export CLICK_VERSION_PREFIX=" | awk -F'"' '$0=$2') >> $GITHUB_ENV
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          ARTIFACT_VERSION=${TAG_NAME#v}
+          echo "ARTIFACT_VERSION=$ARTIFACT_VERSION" >> $GITHUB_ENV
+          echo "Set ARTIFACT_VERSION=$ARTIFACT_VERSION"
+      - name: Debug ARTIFACT_VERSION
+        run: echo "ARTIFACT_VERSION=$ARTIFACT_VERSION"
+        env:
+          ARTIFACT_VERSION: ${{ env.ARTIFACT_VERSION }}
       - name: Install clickable
         run: |
-          sudo apt install adb git python3 python3-pip python3-setuptools
           python3 -m pip install clickable-ut
-          echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
       - name: Build
         # build the app with clickable for all specified architectures
         run: |
@@ -54,9 +64,17 @@ jobs:
         # upload the build artifacts to github using the appname and version
         uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
         with:
-          name: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}
+          name: ${{ matrix.appname }}_${{ matrix.arch }}
           path: build/*/app/*.click
           if-no-files-found: error
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2 # https://github.com/softprops/action-gh-release
+        with:
+          files: build/*/app/*.click
+          body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
+          prerelease: true
       - name: Publish to Open Store
         # publish to OpenStore using the API key specified as Github secret with the last commit message (=changelog) as content
         env:
@@ -64,18 +82,3 @@ jobs:
         run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter
           CHANGELOG=${{ github.event.head_commit.message }}
           clickable publish --apikey ${OPENSTORE_KEY} -- "$CHANGELOG"
-      - name: Create Release
-        # create a release with the last commit message (=changelog) as content
-        id: create_release
-        uses: softprops/action-gh-release@v2 # here @latest doesn't work, specific version v2 or above
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-          CHANGELOG: "${{ github.event.head_commit.message }}" # grab the last commit message as changelog
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ${CHANGELOG}
-          draft: false
-          prerelease: false
-          files: ${{ matrix.appname }}_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}
-          fail_on_unmatched_files: false
