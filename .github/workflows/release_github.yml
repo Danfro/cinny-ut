@@ -60,71 +60,77 @@ jobs:
         # build the app with clickable for all specified architectures
         run: |
           clickable build --arch ${{ matrix.arch }}
-      # - name: Upload artifacts
-      #   # upload the build artifacts to github using the appname and version
-      #   uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
-      #   with:
-      #     name: ${{ matrix.appname }}_${{ matrix.arch }}
-      #     path: .build/*/app/*.click
-      #     if-no-files-found: error
-  release:
-      needs: build  # Waits for all build jobs to finish
-      runs-on: ubuntu-latest
-      steps:
-      # - name: Upload Artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: ${{ matrix.architecture }}-build
-      #     path: ./build/output
-      # - name: Upload artifacts
-      #   # upload the build artifacts to github using the appname and version
-      #   uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
-      #   with:
-      #     name: ${{ matrix.appname }}_${{ matrix.arch }}
-      #     path: /home/runner/work/cinny-ut/cinny-ut/build/*/app/*.click
-      #     if-no-files-found: error
-      # - name: Check if release exists
-      #   id: check_release
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-      #     if gh release view ${{ github.ref_name }} --repo ${{ github.repository }} > /dev/null 2>&1; then
-      #       echo "exists=true" >> $GITHUB_ENV
-      #     else
-      #       echo "exists=false" >> $GITHUB_ENV
-      #     fi
-      - name: Create Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # if: env.exists == 'false' # Only proceed if release doesn't exist
-        uses: actions/create-release@v1
+      - name: Upload artifacts
+        # upload the build artifacts to github using the appname and version
+        uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
-          draft: false
-          prerelease: true
-      # - name: list File Paths
-      #   run: ls -l .build/*/app/
-      # - name: Upload All Click Files
-      #   run: |
-      #     for file in /home/runner/work/cinny-ut/cinny-ut/build/x86_64-linux-gnu/app/*.click; do
-      #       echo "Uploading $file"
-      #       gh release upload "${{ steps.create_release.outputs.tag_name }}" "$file"
-      #     done
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload Release Asset
-        run: |
-          gh release upload "${{ steps.create_release.outputs.tag_name }}" \
-          /home/runner/work/cinny-ut/cinny-ut/build/x86_64-linux-gnu/app/cinny.danfro_4.6.0.1RC_amd64.click
-          gh release upload "${{ steps.create_release.outputs.tag_name }}" \
-          /home/runner/work/cinny-ut/cinny-ut/build/aarch64-linux-gnu/app/cinny.danfro_4.6.0.1RC_arm64.click
-          gh release upload "${{ steps.create_release.outputs.tag_name }}" \
-          /home/runner/work/cinny-ut/cinny-ut/build/arm-linux-gnueabihf/app/cinny.danfro_4.6.0.1RC_armhf.click
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ matrix.appname }}_${{ matrix.arch }}
+          path: build/*/app/*.click
+          if-no-files-found: error
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        # if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: build/*/app/*.click
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+  # release:
+  #     needs: build  # Waits for all build jobs to finish
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #     # - name: Upload Artifact
+  #     #   uses: actions/upload-artifact@v3
+  #     #   with:
+  #     #     name: ${{ matrix.architecture }}-build
+  #     #     path: ./build/output
+  #     # - name: Upload artifacts
+  #     #   # upload the build artifacts to github using the appname and version
+  #     #   uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
+  #     #   with:
+  #     #     name: ${{ matrix.appname }}_${{ matrix.arch }}
+  #     #     path: /home/runner/work/cinny-ut/cinny-ut/build/*/app/*.click
+  #     #     if-no-files-found: error
+  #     # - name: Check if release exists
+  #     #   id: check_release
+  #     #   env:
+  #     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     #   run: |
+  #     #     echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+  #     #     if gh release view ${{ github.ref_name }} --repo ${{ github.repository }} > /dev/null 2>&1; then
+  #     #       echo "exists=true" >> $GITHUB_ENV
+  #     #     else
+  #     #       echo "exists=false" >> $GITHUB_ENV
+  #     #     fi
+  #     - name: Create Release
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       # if: env.exists == 'false' # Only proceed if release doesn't exist
+  #       uses: actions/create-release@v1
+  #       with:
+  #         tag_name: ${{ github.ref_name }}
+  #         release_name: Release ${{ github.ref_name }}
+  #         body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
+  #         draft: false
+  #         prerelease: true
+  #     # - name: list File Paths
+  #     #   run: ls -l .build/*/app/
+  #     # - name: Upload All Click Files
+  #     #   run: |
+  #     #     for file in /home/runner/work/cinny-ut/cinny-ut/build/x86_64-linux-gnu/app/*.click; do
+  #     #       echo "Uploading $file"
+  #     #       gh release upload "${{ steps.create_release.outputs.tag_name }}" "$file"
+  #     #     done
+  #     #   env:
+  #     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Upload Release Asset
+  #       run: |
+  #         gh release upload "${{ steps.create_release.outputs.tag_name }}" \
+  #         /home/runner/work/cinny-ut/cinny-ut/build/x86_64-linux-gnu/app/cinny.danfro_4.6.0.1RC_amd64.click
+  #         gh release upload "${{ steps.create_release.outputs.tag_name }}" \
+  #         /home/runner/work/cinny-ut/cinny-ut/build/aarch64-linux-gnu/app/cinny.danfro_4.6.0.1RC_arm64.click
+  #         gh release upload "${{ steps.create_release.outputs.tag_name }}" \
+  #         /home/runner/work/cinny-ut/cinny-ut/build/arm-linux-gnueabihf/app/cinny.danfro_4.6.0.1RC_armhf.click
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 
