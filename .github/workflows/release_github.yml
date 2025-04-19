@@ -68,11 +68,13 @@ jobs:
           path: build/*/app/*.click
           if-no-files-found: error
       - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v2
         # if: startsWith(github.ref, 'refs/tags/')
         with:
           files: build/*/app/*.click
-          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          # token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
   # release:
   #     needs: build  # Waits for all build jobs to finish
   #     runs-on: ubuntu-latest
