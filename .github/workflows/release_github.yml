@@ -70,11 +70,12 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: softprops/action-gh-release@v2
-        # if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2 # https://github.com/softprops/action-gh-release
         with:
           files: build/*/app/*.click
-          # token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
+          prerelease: true
+
   # release:
   #     needs: build  # Waits for all build jobs to finish
   #     runs-on: ubuntu-latest
