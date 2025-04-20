@@ -4,8 +4,9 @@ name: build and github release
 
 on:
   # start the script when a tag is pushed ending with RC (no underline before RC, that will fail linting)
-  # format v1.2.3(.4)RC with values in brackets being optional
+  # tag format: v1.2.3.4RC
   # note: GitHub Actions does not support full regex in tag patterns; it uses simple glob patterns like *, ?, and [] instead.
+  # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
   push:
     tags:
       - 'v*.*.*.*RC'
