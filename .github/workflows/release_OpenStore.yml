@@ -75,13 +75,6 @@ jobs:
           files: build/*/app/*.click
           body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
           prerelease: false
-  release:
-    needs: build  # Waits for build job to finish
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install clickable
-        run: |
-          python3 -m pip install clickable-ut
       - name: Publish to Open Store
         # publish to OpenStore using the API key specified as Github secret with the last commit message (=changelog) as content
         env:
@@ -91,3 +84,19 @@ jobs:
           clickable publish --arch arm64 --apikey ${OPENSTORE_KEY} -- "$CHANGELOG"
           clickable publish --arch amd64 --apikey ${OPENSTORE_KEY}
           clickable publish --arch armhf --apikey ${OPENSTORE_KEY}
+  # release:
+  #   needs: build  # Waits for build job to finish
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Install clickable
+  #       run: |
+  #         python3 -m pip install clickable-ut
+  #     - name: Publish to Open Store
+  #       # publish to OpenStore using the API key specified as Github secret with the last commit message (=changelog) as content
+  #       env:
+  #         OPENSTORE_KEY: ${{ secrets.OPENSTORE_KEY }}
+  #       run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter
+  #         echo "CHANGELOG=${{ github.event.head_commit.message }}" >> $GITHUB_ENV
+  #         clickable publish --arch arm64 --apikey ${OPENSTORE_KEY} -- "$CHANGELOG"
+  #         clickable publish --arch amd64 --apikey ${OPENSTORE_KEY}
+  #         clickable publish --arch armhf --apikey ${OPENSTORE_KEY}
