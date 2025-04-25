@@ -74,11 +74,11 @@ jobs:
         with:
           files: build/*/app/*.click
           body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
-          prerelease: true
+          prerelease: false
       - name: Publish to Open Store
         # publish to OpenStore using the API key specified as Github secret with the last commit message (=changelog) as content
         env:
           OPENSTORE_KEY: ${{ secrets.OPENSTORE_KEY }}
         run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter
-          CHANGELOG=${{ github.event.head_commit.message }}
+          echo "CHANGELOG=${{ github.event.head_commit.message }}" >> $GITHUB_ENV
           clickable publish --apikey ${OPENSTORE_KEY} -- "$CHANGELOG"
