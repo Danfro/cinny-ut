@@ -81,9 +81,9 @@ jobs:
           OPENSTORE_KEY: ${{ secrets.OPENSTORE_KEY }}
         run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter
           echo "CHANGELOG=${{ github.event.head_commit.message }}" >> $GITHUB_ENV
-          clickable publish --arch arm64 -- "$CHANGELOG"
-          clickable publish --arch amd64
-          clickable publish --arch armhf
+          clickable publish --apikey ${OPENSTORE_KEY} --arch arm64 -- "$CHANGELOG"
+          clickable publish --apikey ${OPENSTORE_KEY} --arch amd64
+          clickable publish --apikey ${OPENSTORE_KEY} --arch armhf
   # release:
   #   needs: build  # Waits for build job to finish
   #   runs-on: ubuntu-latest
