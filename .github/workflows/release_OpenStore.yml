@@ -56,6 +56,7 @@ jobs:
       - name: Install clickable
         run: |
           python3 -m pip install clickable-ut
+          echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
       - name: Build
         # build the app with clickable for all specified architectures
         run: |
