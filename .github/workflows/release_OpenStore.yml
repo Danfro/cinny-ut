@@ -66,13 +66,13 @@ jobs:
           clickable publish --arch arm64 -- "$CHANGELOG"
           clickable build --arch amd64
           clickable publish --arch amd64
-          clickable build -arch armhf
+          clickable build --arch armhf
           clickable publish --arch armhf
       - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
-        uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
+        uses: actions/upload-artifact@v4 # https://github.com/actions/upload-artifact
         with:
-          name: ${{ matrix.appname }}_${{ matrix.arch }}
+          name: ${{ matrix.appname }}
           path: build/*/app/*.click
           if-no-files-found: error
       - name: Release
