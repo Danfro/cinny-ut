@@ -62,10 +62,12 @@ jobs:
         env:
           OPENSTORE_API_KEY: ${{ secrets.OPENSTORE_API_KEY }}
         run: |
-          clickable build --arch ${{ matrix.arch }}
+          clickable build --arch arm64
           echo "CHANGELOG=${{ github.event.head_commit.message }}" >> $GITHUB_ENV
           clickable publish --arch arm64 -- "$CHANGELOG"
+          clickable build --arch amd64
           clickable publish --arch amd64
+          clickable build -arch armhf
           clickable publish --arch armhf
       - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
