@@ -22,14 +22,14 @@ index 7c774cf..d8f2d8a 100644
 +            brand: 'Cinny',
 +        },
 +        device_display_name: 'Cinny Ubuntu Touch',
-+        lang: "de",
++        lang: "en",
 +        kind: "http",
 +        profile_tag: "xxyyzz",
 +        pushkey: token
 +        })
 +    );
 +    promises.push(mx.setPushRuleEnabled('global', 'content', '.m.rule.contains_user_name', true));
-+    console.error("Set appID " + appId + "with token " + token);
++    console.error("Set appID " + appId + " with token " + token);
 +    return Promise.all(promises).then(() => {});
 +    };
 +
