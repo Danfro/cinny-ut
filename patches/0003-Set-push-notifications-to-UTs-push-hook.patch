@@ -30,7 +30,7 @@ index 7c774cf..d8f2d8a 100644
 +    );
 +    promises.push(mx.setPushRuleEnabled('global', 'content', '.m.rule.contains_user_name', true));
 +    console.error("Set appID " + appId + " with token " + token);
-+    return Promise.all(promises).then(() => {});
++    return Promise.all(promises).then(() => {}).catch(error => console.error('UT push error: ' + error.message));
 +    };
 +
 +    export const startClient = async (mx: MatrixClient) => {
