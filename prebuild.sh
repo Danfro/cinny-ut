@@ -8,11 +8,11 @@ APP_TARGET="dist"
 REPO_DIR=${ROOT}/${REPO_NAME}
 
 REPO_VERSION="4.6.0"
-CLICK_VERSION_PREFIX=".1"
+CLICK_VERSION_PREFIX=".2RC"
 
-NODE_VERSION=22.14.0
+NODE_VERSION=22.15.1
 NPM_DIR="${HOME}/.npm"
-NVM_VERSION=0.40.2
+NVM_VERSION=0.40.3
 NVM_DIR="${HOME}/.nvm"
 
 walk () {
@@ -76,7 +76,7 @@ setup_node () {
     echo "Setting up node $NODE_VERSION"
     local npmlocaldir="${ROOT}/npm"
     if [ -d "$npmlocaldir" ]; then
-        pushd "$npmlocaldir" > /dev/null  # changes into the nvm folder
+        pushd "$npmlocaldir" > /dev/null  # changes into the npm folder
         # copy and setup first, otherwise hard to check the version number
         cp -r "$npmlocaldir" $NPM_DIR
         export PATH="$NPM_DIR/bin:$PATH" # Add the copied npm directory to the PATH
