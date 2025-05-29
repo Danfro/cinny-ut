@@ -37,9 +37,9 @@ The build process does download and install
 
 Doing all three steps every time cinny-ut is build is quite cumbersome. To avoid this, the `prebuild.sh` script has been designed to allow using locally present copies of the three.
 
-- `nvm` needs to be installed into the `cinny-ut/nvm` subfolder, get it [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating), since `nvm` is only used to install node, it doesn't need to be installed when node is installed locally
-- `nodejs` (aka `npm`) needs to be installed into the `cinny-ut/npm` subfolder, get it [here](https://nodejs.org/en/download), generally you need the *node_x64* architecture when downloading a prebuild package
-- cinny source needs to be in the `cinny-ut/cinny` subfolder, this can be cloned from their github with `git clone https://github.com/cinnyapp/cinny cinny --recurse-submodules --depth=1 --branch="v4.6.0"`
+- `nvm` needs to be installed into the `cinny-ut/nvm` subfolder, get it [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating), since `nvm` is only used to install node, it doesn't need to be installed when node is installed locally, update with the curl command given on their github page
+- `nodejs` (aka `npm`) needs to be installed into the `cinny-ut/npm` subfolder, get it [here](https://nodejs.org/en/download), generally you need the *node_x64* architecture when downloading a prebuild package, update with `nvm install 22.15.1`
+- cinny source needs to be in the `cinny-ut/cinny` subfolder, this can be cloned from their github with `git clone https://github.com/cinnyapp/cinny cinny --recurse-submodules --depth=1 --branch="v4.7.0"`
 
 ## Patches
 
