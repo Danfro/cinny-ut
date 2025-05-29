@@ -68,9 +68,21 @@ MainView {
         property bool visualHintIsActive: true
     }
 
+    Arguments {
+        id: args;
+        //TRANSLATORS: %1 does specify the parameters, %2 does specify the url for weather apps repo at gitlab
+        // defaultArgument.help: i18n.tr("Valid arguments for weather app are: %1 They will be managed by system. See the README at %2 for a full comment about them").arg("--location, --city, --lat, --lng").arg("https://gitlab.com/ubports/development/apps/lomiri-weather-app/");
+        defaultArgument.valueNames: []
+    }
+
     Component.onCompleted: function () {
         theme.name = ""
         appSettings.systemTheme = theme.name.substring(theme.name.lastIndexOf(".")+1)
+
+        if (args.defaultArgument.at(0)) {
+            let result = args.defaultArgument.at(0).toString().replace("cinny://", "http://localhost:19999/")
+            webView.url = result
+        } 
     }
     onActiveChanged: () => {appSettings.windowActive = mainView.active}
 
@@ -117,6 +129,7 @@ MainView {
                 onNewViewRequested : function (request) {
                     request.action = WebEngineNavigationRequest.IgnoreRequest
                     if (request.requestedUrl !== "ignore://") {
+                        console.log("requested url: " + request.requestedUrl.toString())
                         Qt.openUrlExternally(request.requestedUrl)
                     }
                 }
@@ -153,7 +166,12 @@ MainView {
                 target: UriHandler
 
                 onOpened: {
-                    let result = uris[0].toString().replace("cinny://sso/", webView.url.toString())
+                    // depending on where the app is, local urls differ, examples:
+                    // http://localhost:19999/direct/
+                    // http://localhost:19999/home/
+                    // I don't know how to determine from the uri if the chat is direct, home or other
+                    // so always go to root page, then a window opens and offers to view the chat
+                    let result = uris[0].toString().replace("cinny://", "http://localhost:19999/")
                     webView.url = result
                   }
               }
