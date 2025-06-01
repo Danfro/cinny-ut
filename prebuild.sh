@@ -126,16 +126,18 @@ setup_node () {
 }
 
 build () {
-  cd ${REPO_DIR}
-  echo "Building cinny"
-  npm install
-  npm run build
+    cd ${REPO_DIR}
+    echo "Building cinny"
+    #   replace repo version with current cinny-ut version in about page, version value taken from cons.js
+    sed -i "s/$REPO_VERSION/$REPO_VERSION$CLICK_VERSION_PREFIX/g" "${REPO_DIR}/src/client/state/cons.js"
+    npm install
+    npm run build
 }
 
 package () {
-  echo "Packaging cinny"
-  cp -r "${APP_TARGET}" "${ROOT}/target"
-  sed -i "s/@CLICK_VERSION@/$REPO_VERSION$CLICK_VERSION_PREFIX/g" "${ROOT}/manifest.json.in"
+    echo "Packaging cinny"
+    cp -r "${APP_TARGET}" "${ROOT}/target"
+    sed -i "s/@CLICK_VERSION@/$REPO_VERSION$CLICK_VERSION_PREFIX/g" "${ROOT}/manifest.json.in"
 }
 
 cleanup
