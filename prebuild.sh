@@ -25,6 +25,10 @@ cleanup () {
         echo "Cleaning up"
         rm -rf "${ROOT}/target"
     fi
+    #   drop code changes to manifest.json.in, logo.svg and .pot file that are generated with every build
+    git checkout ${ROOT}/manifest.json.in
+    git checkout ${ROOT}//assets/logo.svg
+    git checkout ${ROOT}//po/cinny.danfro.pot
 }
 
 clone () {
