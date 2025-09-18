@@ -1,0 +1,37 @@
+diff --git a/src/app/components/ServerConfigsLoader.tsx b/src/app/components/ServerConfigsLoader.tsx
+index 3c8ce8e..f3c4e6b 100644
+--- a/src/app/components/ServerConfigsLoader.tsx
++++ b/src/app/components/ServerConfigsLoader.tsx
+@@ -1,10 +1,13 @@
+ import { ReactNode, useCallback, useMemo } from 'react';
+-import { Capabilities, validateAuthMetadata, ValidatedAuthMetadata } from 'matrix-js-sdk';
++import { Capabilities } from 'matrix-js-sdk';
+ import { AsyncStatus, useAsyncCallbackValue } from '../hooks/useAsyncCallback';
+ import { useMatrixClient } from '../hooks/useMatrixClient';
+ import { MediaConfig } from '../hooks/useMediaConfig';
+ import { promiseFulfilledResult } from '../utils/common';
+ 
++const validateAuthMetadata = (metadata: any) => metadata;
++type ValidatedAuthMetadata = any;
++
+ export type ServerConfigs = {
+   capabilities?: Capabilities;
+   mediaConfig?: MediaConfig;
+@@ -23,9 +26,16 @@ export function ServerConfigsLoader({ children }: ServerConfigsLoaderProps) {
+       const result = await Promise.allSettled([
+         mx.getCapabilities(),
+         mx.getMediaConfig(),
+-        mx.getAuthMetadata(),
+       ]);
+ 
++      // only call getAuthMetadata if existing
++      if (typeof mx.getAuthMetadata === 'function') {
++        promises.push(mx.getAuthMetadata());
++      } else {
++        // Fallback - Promise with empty object
++        promises.push(Promise.resolve({}));
++      }
++
+       const capabilities = promiseFulfilledResult(result[0]);
+       const mediaConfig = promiseFulfilledResult(result[1]);
+       const authMetadata = promiseFulfilledResult(result[2]);

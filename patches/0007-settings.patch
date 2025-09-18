@@ -1,29 +1,23 @@
 diff --git a/src/app/state/settings.ts b/src/app/state/settings.ts
-index 799747a..64b4243 100644
+index 31ee6cc..1acfadf 100644
 --- a/src/app/state/settings.ts
 +++ b/src/app/state/settings.ts
-@@ -36,6 +36,10 @@ export interface Settings {
-   isNotificationSounds: boolean;
+@@ -41,6 +41,8 @@ export interface Settings {
+   dateFormatString: string;
  
    developerTools: boolean;
 +
-+  useTwelveHourFormat: boolean;
-+  enableBottomGesture: boolean;
 +  displayBottomGestureHint: boolean;
  }
  
  const defaultSettings: Settings = {
-@@ -63,9 +67,12 @@ const defaultSettings: Settings = {
+@@ -69,7 +71,8 @@ const defaultSettings: Settings = {
    legacyUsernameColor: false,
  
    showNotifications: true,
 -  isNotificationSounds: true,
 +  isNotificationSounds: false,
- 
-   developerTools: false,
-+  useTwelveHourFormat: true,
-+  enableBottomGesture: true,
 +  displayBottomGestureHint: true,
- };
  
- export const getSettings = () => {
+   hour24Clock: false,
+   dateFormatString: 'D MMM YYYY',

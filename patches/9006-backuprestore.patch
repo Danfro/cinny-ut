@@ -1,0 +1,27 @@
+diff --git a/src/app/state/backupRestore.ts b/src/app/state/backupRestore.ts
+index ad14e5d..9124c6d 100644
+--- a/src/app/state/backupRestore.ts
++++ b/src/app/state/backupRestore.ts
+@@ -1,5 +1,21 @@
+ import { atom } from 'jotai';
+-import { ImportRoomKeyProgressData, ImportRoomKeyStage } from 'matrix-js-sdk/lib/crypto-api';
++
++let ImportRoomKeyProgressData: any;
++let ImportRoomKeyStage: any;
++
++try {
++  const cryptoApi = require('matrix-js-sdk/lib/crypto-api');
++  ImportRoomKeyProgressData = cryptoApi.ImportRoomKeyProgressData;
++  ImportRoomKeyStage = cryptoApi.ImportRoomKeyStage;
++} catch {
++  // Fallback für ältere Versionen
++  ImportRoomKeyProgressData = Object;
++  ImportRoomKeyStage = {
++    NotStarted: 'not_started',
++    InProgress: 'in_progress',
++    Complete: 'complete'
++  };
++}
+ 
+ export enum BackupProgressStatus {
+   Idle,

@@ -7,7 +7,7 @@ index 9cd4b0b..4c1e94c 100644
            justifyContent="Center"
          >
 -          <Text size="L400">Connecting...</Text>
-+          <Text size="L400">Synchronizing...</Text>
++          <Text size="L400">Connecting to account...</Text>
          </Box>
          <Line variant="Success" size="300" />
        </Box>

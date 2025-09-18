@@ -1,0 +1,24 @@
+diff --git a/src/index.tsx b/src/index.tsx
+index ddfd30b..a6d2d28 100644
+--- a/src/index.tsx
++++ b/src/index.tsx
+@@ -1,4 +1,19 @@
+ /* eslint-disable import/first */
++// Polyfill for Qt 5.12 WebEngine
++if (!Array.prototype.at) {
++  Array.prototype.at = function(index) {
++    if (index >= 0) return this[index];
++    return this[this.length + index];
++  };
++}
++
++if (!String.prototype.at) {
++  String.prototype.at = function(index) {
++    if (index >= 0) return this[index];
++    return this[this.length + index];
++  };
++}
++
+ import React from 'react';
+ import { createRoot } from 'react-dom/client';
+ import { enableMapSet } from 'immer';

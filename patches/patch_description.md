@@ -19,10 +19,7 @@ This patch implements a QML binding in html code. This way we can call functions
 ### 0006-gestures.patch
 ### 0007-settings.patch
 
-### 0008-24h ... patches
-
 Implement
-- a setting for 24h mode
 - set cinny sound notifications to false as default, since they are handled by UT native notification sounds
 - add settings for Kugi's bottom bar gesture
 
@@ -36,3 +33,8 @@ Hopefully it can be enabled at a later point.
 
 ### 9003-connect-to-sync.patch
 Rename "Connecting..." in the green bar at the top to "Synchronizing..." until this change is upstreamed.
+
+### 9004-9008
+Due to our old WebEndineView we can't use the newest Webassembly features introduced with Cinny 4.7.0, concrete the upgrade of matrix-sdk to 37.5.0.
+This set of patches downgrades to matrix-sdk 36.1.0, the highest version not using those features, and applies some hacks to make the app work nonetheless.
+With a newer WebEngineView this set of patches can be dropped.

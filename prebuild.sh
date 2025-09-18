@@ -7,8 +7,8 @@ REPO_URL="https://github.com/cinnyapp/cinny"
 APP_TARGET="dist"
 REPO_DIR=${ROOT}/${REPO_NAME}
 
-REPO_VERSION="4.6.0"
-CLICK_VERSION_PREFIX=".2RC"
+REPO_VERSION="4.10.0"
+CLICK_VERSION_PREFIX=".1RC"
 
 NODE_VERSION=22.15.1
 NPM_DIR="${HOME}/.npm"
@@ -133,7 +133,7 @@ build () {
     cd ${REPO_DIR}
     echo "Building cinny"
     #   replace repo version with current cinny-ut version in about page, version value taken from cons.js
-    sed -i "s/$REPO_VERSION/$REPO_VERSION$CLICK_VERSION_PREFIX/g" "${REPO_DIR}/src/client/state/cons.js"
+    sed -i "s/$REPO_VERSION/$REPO_VERSION$CLICK_VERSION_PREFIX/g" "${REPO_DIR}/src/app/features/settings/about/About.tsx"
     npm install
     npm run build
 }
