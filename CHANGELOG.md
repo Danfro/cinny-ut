@@ -1,3 +1,30 @@
+v4.10.0
+For Cinny changelog please see releases info under https://github.com/cinnyapp/cinny/releases.
+
+Cinny UT changelog:
+- updated: Cinny version to 4.10.0
+- removed: Cinny-ut 24h setting patch, since Cinny has now an implementation for that
+- improved: reworded "Synchronizing..." to "Connecting to account..." since that is apparently what happens
+
+v4.6.0.2
+- fixed: blank screen when clicking on notification with cinny already open
+- improved: added cinny-ut version number to about page
+
+v4.6.0.1
+- improved: building and releasing with github action (but not fully working yet)
+
+v4.6.0
+For Cinny changelog please see releases info under https://github.com/cinnyapp/cinny/releases.
+
+Note: With Cinny 4.6.0 user names are now per default colored based on permissions. The previous design can be restored in settings.
+
+Cinny UT changelog:
+
+- added: optional bottom bar for forward/backward navigation (thanks to @kugiigi)
+- added: setting for 24h time format
+- improved: reworded "Connecting..." to "Synchronizing..."
+
+
 v4.5.1
 For Cinny changelog please see releases info under https://github.com/cinnyapp/cinny/releases.
 
