@@ -57,7 +57,8 @@ Page {
             picker.activeTransfer = peer.request()
             picker.activeTransfer.stateChanged.connect(function() {
                 if (picker.activeTransfer.state === ContentTransfer.InProgress) {
-                    picker.activeTransfer.items = [ resultComponent.createObject(parent, {"url": "file://" + picker.url}) ];
+                    var fileUrl = picker.url.startsWith("file://") ? picker.url : "file://" + picker.url
+                    picker.activeTransfer.items = [ resultComponent.createObject(parent, {"url": fileUrl}) ];
                     picker.activeTransfer.state = ContentTransfer.Charged;
                     Backend.removeDownload(picker.url)
                     pageStack.pop()
@@ -66,7 +67,6 @@ Page {
         }
 
         onCancelPressed: {
-            Backend.removeDownload()
             Backend.removeDownload(picker.url)
             pageStack.pop()
         }
