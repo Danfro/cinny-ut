@@ -20,8 +20,8 @@ permissions:
 jobs:
   build:
     strategy:
-      # matrix:
-      #   appname: [cinny.danfro]
+      matrix:
+        appname: [cinny.danfro]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
