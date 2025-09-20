@@ -59,6 +59,7 @@ Page {
         handler: picker.handler //ContentHandler.Source
 
         onPeerSelected: {
+            peer.selectionType = ContentTransfer.Single // Cinny can handle only single file uploads
             picker.activeTransfer = peer.request()
             picker.activeTransfer.stateChanged.connect(function() {
                         if (picker.activeTransfer.state === ContentTransfer.InProgress) {
@@ -72,7 +73,6 @@ Page {
                 }
             })
         }
-
 
         onCancelPressed: {
             rejected()
