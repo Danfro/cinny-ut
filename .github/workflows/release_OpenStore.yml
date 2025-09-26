@@ -42,16 +42,16 @@ jobs:
           nvm install $NODE_VERSION
           nvm use $NODE_VERSION
           echo "Node.js $(node -v) installed via nvm"
-      - name: Set Artifact Version
-        run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}
-          ARTIFACT_VERSION=${TAG_NAME#v}
-          echo "ARTIFACT_VERSION=$ARTIFACT_VERSION" >> $GITHUB_ENV
-          echo "Set ARTIFACT_VERSION=$ARTIFACT_VERSION"
-      - name: Debug ARTIFACT_VERSION
-        run: echo "ARTIFACT_VERSION=$ARTIFACT_VERSION"
-        env:
-          ARTIFACT_VERSION: ${{ env.ARTIFACT_VERSION }}
+      # - name: Set Artifact Version
+      #   run: |
+      #     TAG_NAME=${GITHUB_REF#refs/tags/}
+      #     ARTIFACT_VERSION=${TAG_NAME#v}
+      #     echo "ARTIFACT_VERSION=$ARTIFACT_VERSION" >> $GITHUB_ENV
+      #     echo "Set ARTIFACT_VERSION=$ARTIFACT_VERSION"
+      # - name: Debug ARTIFACT_VERSION
+      #   run: echo "ARTIFACT_VERSION=$ARTIFACT_VERSION"
+      #   env:
+      #     ARTIFACT_VERSION: ${{ env.ARTIFACT_VERSION }}
       - name: Install clickable
         run: |
           python3 -m pip install clickable-ut
@@ -61,9 +61,7 @@ jobs:
         env:
           OPENSTORE_API_KEY: ${{ secrets.OPENSTORE_API_KEY }}
         run: |
-          clickable build --arch arm64
-          CHANGELOG="${{ github.event.head_commit.message }}"
-          clickable publish --arch arm64 -- "$CHANGELOG"
+          clickable chain build publish --arch arm64 -- "${{ github.event.head_commit.message }}"
           clickable build --arch amd64
           clickable publish --arch amd64
           clickable build --arch armhf
