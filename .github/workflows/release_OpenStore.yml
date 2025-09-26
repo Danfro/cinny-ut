@@ -61,7 +61,8 @@ jobs:
         env:
           OPENSTORE_API_KEY: ${{ secrets.OPENSTORE_API_KEY }}
         run: |
-          clickable chain build publish --arch arm64 -- "${{ github.event.head_commit.message }}"
+          CHANGELOG="${{ github.event.head_commit.message }}"
+          clickable chain build publish --arch arm64 -- "$CHANGELOG"
           clickable build --arch amd64
           clickable publish --arch amd64
           clickable build --arch armhf
