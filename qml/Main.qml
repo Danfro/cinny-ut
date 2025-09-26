@@ -79,7 +79,7 @@ MainView {
         theme.name = ""
         appSettings.systemTheme = theme.name.substring(theme.name.lastIndexOf(".")+1)
 
-        startupTimer.start()
+        serverCheckTimer.start()
     }
     onActiveChanged: () => {appSettings.windowActive = mainView.active}
 
@@ -116,7 +116,7 @@ MainView {
             anchors.fill : parent
             anchors.bottomMargin: bottomGesture.enableVisualHint ? bottomGesture.gestureAreaHeight : 0
             focus : true
-            // url: will be set in startupTimer to avoid race condition when HTTP-server is not ready but component is created
+            // url: will be set in serverCheckTimer to avoid race condition when HTTP-server is not ready but component is created
             webChannel: channel
             settings.pluginsEnabled : true
             settings.javascriptEnabled : true
@@ -181,7 +181,7 @@ MainView {
             WebChannel.id: "webChannelBackend"
 
             property alias settings: appSettings
-            property var push: none
+            property var push: null
 
             signal matrixPushTokenChanged();
 
@@ -297,22 +297,30 @@ MainView {
     }
 
     Timer {
-        id: startupTimer
-        interval: 250  // wait some ms to ensure HTTP-Server is ready before loading components in mainPage and setting url
+        id: serverCheckTimer
+        interval: 200  // wait some ms to ensure HTTP-Server is ready before loading components in mainPage and setting url
         repeat: false
         onTriggered: {
             mainPageStack.push(mainPage)
 
-            // use Loader for pushClient to avoid race condition when pushClient is started before HTTP-Server is ready
-            pushClientLoader.active = true
-
-            if (args.defaultArgument.at(0)) {
-                let result = args.defaultArgument.at(0).toString().replace("cinny://", "http://localhost:19999/")
-                webView.url = result
-            } else {
-                // Standard-URL setzen
-                webView.url = "http://localhost:19999/"
-            }
+            // check if HTTP-server is available
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://localhost:19999/", true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // server is ready, load Cinny
+                    webView.url = args.defaultArgument.at(0) ? 
+                        args.defaultArgument.at(0).toString().replace("cinny://", "http://localhost:19999/") : 
+                        "http://localhost:19999/";
+                    serverCheckTimer.stop();
+                } else {
+                    console.log("local HTTP-server not ready yet, status: " + xhr.status);
+                }
+            };
+            xhr.onerror = function() {
+                console.log("Error when checking for HTTP-server.");
+            };
+            xhr.send();
         }
     }
 
