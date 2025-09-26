@@ -8,6 +8,17 @@ Cinny UT changelog:
 - reenable the fix for the percentage sign in general settings
 - temporary disable room upgrade button since that won't work correctly
 
+v4.10.0.2n
+For Cinny changelog please see releases info under https://github.com/cinnyapp/cinny/releases.
+
+Cinny UT changelog:
+- first noble release of Cinny UT based on Cinny version to 4.10.0
+- fixed: app crash when no network is available
+- removed: Cinny-ut 24h setting patch, since Cinny has now an implementation for that
+- improved: reworded "Synchronizing..." to "Connecting to account..." since that is apparently what happens
+- improved: set ContentHub upload to single file, because Cinny doesn't support multiple files
+- improved: some minor tweaks in ContentHub download
+
 v4.10.0.2
 For Cinny changelog please see releases info under https://github.com/cinnyapp/cinny/releases.
 
