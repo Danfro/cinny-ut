@@ -1,3 +1,5 @@
+<!-- Note: avoid if possible ', " or / or other special characters, otherwise the build might error on parsing the content. -->
+
 v4.10.0.2
 For Cinny changelog please see releases info under https://github.com/cinnyapp/cinny/releases.
 
