@@ -2,8 +2,8 @@
 name: build, publish and release
 
 on:
-  # start the script when a tag is pushed
-  # format v1.2.3(.4)(addition) with values in brackets being optional
+  # start the script when a tag of this format v1.2.3(.4) is pushed
+  # do not execute when the tag contains "RC"
   # note: GitHub Actions does not support full regex in tag patterns; it uses simple glob patterns like *, ?, and [] instead.
   # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
   push:
@@ -19,6 +19,7 @@ permissions:
 # define the build job
 jobs:
   build:
+    if: "!contains(github.ref, 'RC')"
     strategy:
       matrix:
         appname: [cinny.danfro]
@@ -42,16 +43,6 @@ jobs:
           nvm install $NODE_VERSION
           nvm use $NODE_VERSION
           echo "Node.js $(node -v) installed via nvm"
-      # - name: Set Artifact Version
-      #   run: |
-      #     TAG_NAME=${GITHUB_REF#refs/tags/}
-      #     ARTIFACT_VERSION=${TAG_NAME#v}
-      #     echo "ARTIFACT_VERSION=$ARTIFACT_VERSION" >> $GITHUB_ENV
-      #     echo "Set ARTIFACT_VERSION=$ARTIFACT_VERSION"
-      # - name: Debug ARTIFACT_VERSION
-      #   run: echo "ARTIFACT_VERSION=$ARTIFACT_VERSION"
-      #   env:
-      #     ARTIFACT_VERSION: ${{ env.ARTIFACT_VERSION }}
       - name: Install clickable
         run: |
           python3 -m pip install clickable-ut
@@ -62,19 +53,12 @@ jobs:
           OPENSTORE_API_KEY: ${{ secrets.OPENSTORE_API_KEY }}
         run: |
           clickable build --arch arm64
-          CHANGELOG="${{ github.event.head_commit.message }}"
+          CHANGELOG='${{ github.event.head_commit.message }}'
           clickable publish --arch arm64 -- "$CHANGELOG"
           clickable build --arch amd64
           clickable publish --arch amd64
           clickable build --arch armhf
           clickable publish --arch armhf
-      # - name: Upload artifacts
-      #   # upload the build artifacts to github using the appname and version
-      #   uses: actions/upload-artifact@v4 # https://github.com/actions/upload-artifact
-      #   with:
-      #     name: ${{ matrix.appname }}
-      #     path: build/*/app/*.click
-      #     if-no-files-found: error
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
