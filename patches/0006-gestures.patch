@@ -1,8 +1,45 @@
 diff --git a/src/app/features/settings/general/General.tsx b/src/app/features/settings/general/General.tsx
-index b861a06..a0608ec 100644
+index b861a06..d75b1f6 100644
 --- a/src/app/features/settings/general/General.tsx
 +++ b/src/app/features/settings/general/General.tsx
-@@ -354,6 +354,49 @@ function Appearance() {
+@@ -286,20 +286,22 @@ function PageZoomInput() {
+   };
+ 
+   return (
+-    <Input
+-      style={{ width: toRem(100) }}
+-      variant={pageZoom === parseInt(currentZoom, 10) ? 'Secondary' : 'Success'}
+-      size="300"
+-      radii="300"
+-      type="number"
+-      min="75"
+-      max="150"
+-      value={currentZoom}
+-      onChange={handleZoomChange}
+-      onKeyDown={handleZoomEnter}
+-      after={<Text size="T300">%</Text>}
+-      outlined
+-    />
++    <Box gap="100" alignItems="Center">
++        <Input
++        style={{ width: toRem(75) }}
++        variant={pageZoom === parseInt(currentZoom, 10) ? 'Secondary' : 'Success'}
++        size="300"
++        radii="300"
++        type="number"
++        min="75"
++        max="150"
++        value={currentZoom}
++        onChange={handleZoomChange}
++        onKeyDown={handleZoomEnter}
++        outlined
++        />
++        <Text size="T300">%</Text>
++    </Box>
+   );
+ }
+ 
+@@ -354,6 +356,49 @@ function Appearance() {
    );
  }
  
@@ -52,7 +89,7 @@ index b861a06..a0608ec 100644
  type DateHintProps = {
    hasChanges: boolean;
    handleReset: () => void;
-@@ -1003,6 +1046,7 @@ export function General({ requestClose }: GeneralProps) {
+@@ -1003,6 +1048,7 @@ export function General({ requestClose }: GeneralProps) {
            <PageContent>
              <Box direction="Column" gap="700">
                <Appearance />
