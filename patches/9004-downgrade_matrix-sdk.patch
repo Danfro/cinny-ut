@@ -1,12 +1,12 @@
 diff --git a/package.json b/package.json
-index 0c06993..6b33259 100644
+index 577e129..bd9fd1a 100644
 --- a/package.json
 +++ b/package.json
 @@ -54,7 +54,7 @@
      "jotai": "2.6.0",
      "linkify-react": "4.1.3",
      "linkifyjs": "4.1.3",
--    "matrix-js-sdk": "37.5.0",
+-    "matrix-js-sdk": "38.2.0",
 +    "matrix-js-sdk": "36.1.0",
      "millify": "6.1.0",
      "pdfjs-dist": "4.2.67",
