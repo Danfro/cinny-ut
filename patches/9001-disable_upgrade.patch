@@ -1,0 +1,13 @@
+diff --git a/src/app/features/common-settings/general/RoomUpgrade.tsx b/src/app/features/common-settings/general/RoomUpgrade.tsx
+index 45a480a..b24a3bc 100644
+--- a/src/app/features/common-settings/general/RoomUpgrade.tsx
++++ b/src/app/features/common-settings/general/RoomUpgrade.tsx
+@@ -250,7 +250,7 @@ export function RoomUpgrade({ permissions, requestClose }: RoomUpgradeProps) {
+                 variant="Secondary"
+                 fill="Solid"
+                 radii="300"
+-                disabled={!canUpgrade}
++                disabled
+                 onClick={() => setPrompt(true)}
+               >
+                 <Text size="B300">Upgrade</Text>
