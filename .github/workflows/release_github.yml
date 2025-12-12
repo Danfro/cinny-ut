@@ -59,8 +59,6 @@ jobs:
           python3 -m pip install clickable-ut
       - name: Build
         # build the app with clickable for all specified architectures
-        env:
-          CLICKABLE_CONTAINER_MODE: docker
         run: |
           clickable build --arch ${{ matrix.arch }}
       - name: Upload artifacts
