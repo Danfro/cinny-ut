@@ -51,9 +51,9 @@ jobs:
         # then publish to OpenStore using the API key specified as Github secret with the last commit message as changelog
         env:
           OPENSTORE_API_KEY: ${{ secrets.OPENSTORE_API_KEY }}
-        run: |
+        run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter | wrap changelog assignment in "" to cover multiline text
           clickable build --arch arm64
-          CHANGELOG='${{ github.event.head_commit.message }}'
+          CHANGELOG="${{ github.event.head_commit.message }}"
           clickable publish --arch arm64 -- "$CHANGELOG"
           clickable build --arch amd64
           clickable publish --arch amd64

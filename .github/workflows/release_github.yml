@@ -74,5 +74,5 @@ jobs:
         uses: softprops/action-gh-release@v2 # https://github.com/softprops/action-gh-release
         with:
           files: build/*/app/*.click
-          body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
+          body: "${{ github.event.head_commit.message }}" # Grab the last commit message as changelog
           prerelease: true
