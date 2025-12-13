@@ -56,6 +56,7 @@ jobs:
         with:
           image: clickable/ci-ut24.04-1.x-${{ matrix.arch }}
           run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter | wrap changelog assignment in "" to cover multiline text
+            git config --global --add safe.directory /tmp/clickable_base/cinny-ut || true git config --global --add safe.directory /github/workspace || true
             clickable build --arch ${{ matrix.arch }}
             CHANGELOG="${{ github.event.head_commit.message }}"
             clickable publish --arch arm64 -- "$CHANGELOG"
