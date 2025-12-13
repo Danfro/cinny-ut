@@ -54,7 +54,7 @@ jobs:
           OPENSTORE_API_KEY: ${{ secrets.OPENSTORE_API_KEY }}
         uses: tuxecure/clickable@v1
         with:
-          image: clickable/ci-24.04-1.x-${{ matrix.arch }}
+          image: clickable/ci-ut24.04-1.x-${{ matrix.arch }}
           run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter | wrap changelog assignment in "" to cover multiline text
             clickable build --arch arm64
             CHANGELOG="${{ github.event.head_commit.message }}"
