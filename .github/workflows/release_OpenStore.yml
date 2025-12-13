@@ -23,6 +23,7 @@ jobs:
     strategy:
       matrix:
         appname: [cinny.danfro]
+        arch: [armhf, arm64, amd64]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,14 +52,17 @@ jobs:
         # then publish to OpenStore using the API key specified as Github secret with the last commit message as changelog
         env:
           OPENSTORE_API_KEY: ${{ secrets.OPENSTORE_API_KEY }}
-        run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter | wrap changelog assignment in "" to cover multiline text
-          clickable build --arch arm64
-          CHANGELOG="${{ github.event.head_commit.message }}"
-          clickable publish --arch arm64 -- "$CHANGELOG"
-          clickable build --arch amd64
-          clickable publish --arch amd64
-          clickable build --arch armhf
-          clickable publish --arch armhf
+        uses: tuxecure/clickable@v1
+        with:
+          image: clickable/ci-24.04-1.x-${{ matrix.arch }}
+          run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter | wrap changelog assignment in "" to cover multiline text
+            clickable build --arch arm64
+            CHANGELOG="${{ github.event.head_commit.message }}"
+            clickable publish --arch arm64 -- "$CHANGELOG"
+            clickable build --arch amd64
+            clickable publish --arch amd64
+            clickable build --arch armhf
+            clickable publish --arch armhf
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
