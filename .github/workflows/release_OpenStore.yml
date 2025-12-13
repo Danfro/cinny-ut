@@ -56,12 +56,10 @@ jobs:
         with:
           image: clickable/ci-ut24.04-1.x-${{ matrix.arch }}
           run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter | wrap changelog assignment in "" to cover multiline text
-            clickable build --arch arm64
+            clickable build --arch ${{ matrix.arch }}
             CHANGELOG="${{ github.event.head_commit.message }}"
             clickable publish --arch arm64 -- "$CHANGELOG"
-            clickable build --arch amd64
             clickable publish --arch amd64
-            clickable build --arch armhf
             clickable publish --arch armhf
       - name: Release
         env:
