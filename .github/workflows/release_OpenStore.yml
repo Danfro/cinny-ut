@@ -1,5 +1,6 @@
 # this file will build the app, create a downloadable artifact, publish the app to OpenStore and create a release with the build app as asset
 name: build, publish and release
+
 on:
   # start the script when a tag of this format v1.2.3(.4) is pushed
   # do not execute when the tag contains "RC"
@@ -8,6 +9,7 @@ on:
   push:
     tags:
       - 'v*.*.**'
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -21,7 +23,6 @@ jobs:
     strategy:
       matrix:
         appname: [cinny.danfro]
-        arch: [armhf, arm64, amd64]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,8 +36,6 @@ jobs:
           # Add the paths that clickable/action will mount into the container as safe paths
           mkdir -p "$HOME"
           touch "$HOME/.gitconfig"
-          git config --global --add safe.directory /tmp/clickable_base/cinny-ut || true
-          git config --global --add safe.directory /github/workspace || true
           git config --global --add safe.directory '*' || true
 
       - name: Extract NVM version from prebuild.sh
@@ -56,11 +55,6 @@ jobs:
           nvm use $NODE_VERSION
           echo "Node.js $(node -v) installed via nvm"
 
-      - name: Setup Docker
-        run: |
-          sudo systemctl start docker
-          sudo chmod 666 /var/run/docker.sock
-
       - name: Install clickable
         run: |
           python3 -m pip install clickable-ut
@@ -70,15 +64,13 @@ jobs:
         # then publish to OpenStore using the API key specified as Github secret with the last commit message as changelog
         env:
           OPENSTORE_API_KEY: ${{ secrets.OPENSTORE_API_KEY }}
-        run: |
-          # grab the last commit message as changelog and publish
-          # do not add spaces infront and after a =
-          # add changelog as last parameter
-          # wrap changelog assignment in "" to cover multiline text
-          clickable build --arch ${{ matrix.arch }}
+        run: | # grab the last commit message as changelog and publish | # do not add spaces infront and after a = | add changelog as last parameter | wrap changelog assignment in "" to cover multiline text
+          clickable build --arch arm64
           CHANGELOG="${{ github.event.head_commit.message }}"
           clickable publish --arch arm64 -- "$CHANGELOG"
+          clickable build --arch amd64
           clickable publish --arch amd64
+          clickable build --arch armhf
           clickable publish --arch armhf
 
       - name: Release
