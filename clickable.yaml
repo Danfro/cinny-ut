@@ -3,6 +3,5 @@ builder: cmake
 framework: ubuntu-touch-24.04-1.x
 kill: cinny
 prebuild: "bash ${ROOT}/prebuild.sh"
-container: docker
 install_root_data:
   - "${ROOT}/target"
