@@ -78,9 +78,9 @@ jobs:
           # wrap changelog assignment in "" to cover multiline text
           clickable build --arch ${{ matrix.arch }} --container-mode docker
           CHANGELOG="${{ github.event.head_commit.message }}"
-          clickable publish --arch arm64 --container-mode docker -- "$CHANGELOG"
-          clickable publish --arch amd64 --container-mode docker
-          clickable publish --arch armhf --container-mode docker
+          clickable publish --arch arm64 -- "$CHANGELOG"
+          clickable publish --arch amd64
+          clickable publish --arch armhf
 
       - name: Release
         env:
