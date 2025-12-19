@@ -79,15 +79,16 @@ jobs:
           # Create a symlink (alternative approach)
           sudo ln -sf /usr/local/bin/podman-wrapper /usr/local/bin/podman
 
-      - name: Fix Git ownership for rootful containers
+      - name: Fix permissions for mixed root/user access
         run: |
-          # Since we're using rootful Podman, the container runs as root
-          # We need to ensure git doesn't complain about ownership
-          # Change ownership of workspace to root for container access
-          sudo chown -R root:root $GITHUB_WORKSPACE
+          # Make workspace world-writable so both runner and root (container) can access it
+          sudo chmod -R a+rwX $GITHUB_WORKSPACE
           
-          # Also configure git system-wide to trust all directories
+          # Configure git to trust all directories (system-wide for root in containers)
           sudo git config --system --add safe.directory '*' || true
+          
+          # Also for current user
+          git config --global --add safe.directory '*' || true
 
       - name: Install clickable
         run: |
