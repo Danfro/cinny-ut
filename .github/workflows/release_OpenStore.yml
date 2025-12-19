@@ -63,14 +63,15 @@ jobs:
           cat > ~/.config/containers/storage.conf <<EOF
           [storage]
           driver = "vfs"
+
           [storage.options]
-          ignore_chown_errors = true
+          ignore_chown_errors = "true"
           EOF
-          
+
           # Ensure subuid/subgid ranges are configured
           echo "runner:100000:65536" | sudo tee -a /etc/subuid
           echo "runner:100000:65536" | sudo tee -a /etc/subgid
-          
+
           # Reset Podman storage to apply changes
           podman system reset -f || true
 
