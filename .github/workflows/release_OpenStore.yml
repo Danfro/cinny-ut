@@ -79,6 +79,16 @@ jobs:
           # Create a symlink (alternative approach)
           sudo ln -sf /usr/local/bin/podman-wrapper /usr/local/bin/podman
 
+      - name: Fix Git ownership for rootful containers
+        run: |
+          # Since we're using rootful Podman, the container runs as root
+          # We need to ensure git doesn't complain about ownership
+          # Change ownership of workspace to root for container access
+          sudo chown -R root:root $GITHUB_WORKSPACE
+          
+          # Also configure git system-wide to trust all directories
+          sudo git config --system --add safe.directory '*' || true
+
       - name: Install clickable
         run: |
           python3 -m pip install clickable-ut
