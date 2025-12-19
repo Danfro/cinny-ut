@@ -38,6 +38,9 @@ jobs:
           git config --global --add safe.directory /tmp/clickable_base/cinny-ut || true
           git config --global --add safe.directory /github/workspace || true
           git config --global --add safe.directory '*' || true
+          
+          # Also add to system-wide git config for root user (used in containers)
+          sudo git config --system --add safe.directory '*' || true
 
       - name: Extract NVM version from prebuild.sh
         id: extract-nvm-version
