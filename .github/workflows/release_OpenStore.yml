@@ -58,24 +58,23 @@ jobs:
 
       - name: Setup Podman for Clickable
         run: |
-          # Configure Podman to work in rootless mode without user namespace mapping issues
-          mkdir -p ~/.config/containers
-          cat > ~/.config/containers/containers.conf <<EOF
-          [engine]
-          cgroup_manager = "cgroupfs"
-          events_logger = "file"
+          # Run Podman in rootful mode to avoid user namespace issues
+          # This requires using sudo with podman commands
+          sudo podman system info || true
           
-          [containers]
-          userns = "host"
+          # Create a wrapper script that redirects podman calls to sudo podman
+          sudo tee /usr/local/bin/podman-wrapper > /dev/null <<'EOF'
+          #!/bin/bash
+          exec sudo /usr/bin/podman "$@"
           EOF
           
-          cat > ~/.config/containers/storage.conf <<EOF
-          [storage]
-          driver = "vfs"
+          sudo chmod +x /usr/local/bin/podman-wrapper
           
-          [storage.options]
-          ignore_chown_errors = "true"
-          EOF
+          # Make the wrapper available as 'podman' by modifying PATH
+          echo "/usr/local/bin" >> $GITHUB_PATH
+          
+          # Create a symlink (alternative approach)
+          sudo ln -sf /usr/local/bin/podman-wrapper /usr/local/bin/podman
 
       - name: Install clickable
         run: |
