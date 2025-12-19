@@ -58,22 +58,24 @@ jobs:
 
       - name: Setup Podman for Clickable
         run: |
-          # Configure Podman to work properly in GitHub Actions
+          # Configure Podman to work in rootless mode without user namespace mapping issues
           mkdir -p ~/.config/containers
+          cat > ~/.config/containers/containers.conf <<EOF
+          [engine]
+          cgroup_manager = "cgroupfs"
+          events_logger = "file"
+          
+          [containers]
+          userns = "host"
+          EOF
+          
           cat > ~/.config/containers/storage.conf <<EOF
           [storage]
           driver = "vfs"
-
+          
           [storage.options]
           ignore_chown_errors = "true"
           EOF
-
-          # Ensure subuid/subgid ranges are configured
-          echo "runner:100000:65536" | sudo tee -a /etc/subuid
-          echo "runner:100000:65536" | sudo tee -a /etc/subgid
-
-          # Reset Podman storage to apply changes
-          podman system reset -f || true
 
       - name: Install clickable
         run: |
