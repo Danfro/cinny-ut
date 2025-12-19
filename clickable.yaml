@@ -2,6 +2,8 @@ clickable_minimum_required: 8
 builder: cmake
 framework: ubuntu-touch-24.04-1.x
 kill: cinny
-prebuild: "bash ${ROOT}/prebuild.sh"
+prebuild: |
+  git config --global --add safe.directory '*' 2>/dev/null || git config --system --add safe.directory '*' || true
+  bash ${ROOT}/prebuild.sh
 install_root_data:
   - "${ROOT}/target"

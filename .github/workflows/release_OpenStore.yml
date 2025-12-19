@@ -84,10 +84,7 @@ jobs:
           # Make workspace world-writable so both runner and root (container) can access it
           sudo chmod -R a+rwX $GITHUB_WORKSPACE
           
-          # Configure git to trust all directories (system-wide for root in containers)
-          sudo git config --system --add safe.directory '*' || true
-          
-          # Also for current user
+          # Configure git for current user (outside containers)
           git config --global --add safe.directory '*' || true
 
       - name: Install clickable
