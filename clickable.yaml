@@ -1,6 +1,6 @@
 clickable_minimum_required: 8
 builder: cmake
-framework: ubuntu-sdk-20.04
+framework: ubuntu-touch-24.04-1.x
 kill: cinny
 prebuild: "bash ${ROOT}/prebuild.sh"
 install_root_data:
