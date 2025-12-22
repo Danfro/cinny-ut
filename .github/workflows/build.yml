@@ -48,12 +48,14 @@ jobs:
           sudo apt install adb git python3 python3-pip python3-setuptools
           python3 -m pip install clickable-ut
           echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
-      - name: Build
-        # build the app with clickable for all specified architectures
+      - name: build package
         env:
+          BUILD_TYPE: ${{ (matrix.build == 'Debug') && '--debug' || '' }}
           CLICKABLE_FRAMEWORK: 'ubuntu-touch-24.04-1.x'
-        run: |
-          clickable build --arch ${{ matrix.arch }}
+        uses: tuxecure/clickable@v1
+        with:
+          image: clickable/ci-ut24.04-1.x-${{ matrix.arch }}
+          run: clickable build --verbose ${BUILD_TYPE} --arch ${{ matrix.arch }}
       - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
         uses: actions/upload-artifact@v7 # here @latest doesn't work, specific version v4 or above
