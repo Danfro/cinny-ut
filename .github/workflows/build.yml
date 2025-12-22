@@ -20,7 +20,7 @@ jobs:
       matrix:
         arch: [amd64, arm64, armhf]
         appname: [cinny.danfro]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4 # here @latest doesn't work, specific version v4 or above
