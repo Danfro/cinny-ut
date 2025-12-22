@@ -50,6 +50,8 @@ jobs:
           echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
       - name: Build
         # build the app with clickable for all specified architectures
+        env:
+          CLICKABLE_FRAMEWORK: 'ubuntu-touch-24.04-1.x'
         run: |
           clickable build --arch ${{ matrix.arch }}
       - name: Upload artifacts
