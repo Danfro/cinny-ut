@@ -22,6 +22,8 @@ jobs:
         ut_version: ['20.04', 'ut24.04-1.x']
         appname: [cinny.danfro]
     runs-on: ubuntu-24.04
+    container:
+      image: clickable/ci-ut24.04-1.x-amd64:8.6.0
     steps:
       - name: Checkout
         uses: actions/checkout@v4 # here @latest doesn't work, specific version v4 or above
@@ -48,10 +50,12 @@ jobs:
       - name: build package
         env:
           CLICKABLE_FRAMEWORK: ${{ (matrix.ut_version == '20.04') && 'ubuntu-sdk-20.04' || 'ubuntu-touch-24.04-1.x' }}
-        uses: tuxecure/clickable@v1
-        with:
-          image: clickable/ci-${{ matrix.ut_version }}-${{ matrix.arch }}
-          run: clickable build --verbose
+          CLICKABLE_CONTAINER_MODE: docker
+        # uses: tuxecure/clickable@v1
+        # with:
+        #   image: clickable/ci-${{ matrix.ut_version }}-${{ matrix.arch }}
+        run: 
+          clickable build --verbose
       - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
         uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
