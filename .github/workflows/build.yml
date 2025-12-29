@@ -24,7 +24,12 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: clickable/ci-ut24.04-1.x-amd64:8.6.0
+      options: --user root
     steps:
+      - name: Fix Git safe directory #see https://github.com/credentum/veris-memory/pull/140
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory "/__w/veris-memory/veris-memory"
       - name: Checkout
         uses: actions/checkout@v4 # here @latest doesn't work, specific version v4 or above
         with:
