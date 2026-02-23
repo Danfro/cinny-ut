@@ -7,12 +7,12 @@ REPO_URL="https://github.com/cinnyapp/cinny"
 APP_TARGET="dist"
 REPO_DIR=${ROOT}/${REPO_NAME}
 
-REPO_VERSION="4.10.1"
+REPO_VERSION="4.10.4"
 CLICK_VERSION_PREFIX=""
 
-NODE_VERSION=22.15.1
+NODE_VERSION=24.13.1
 NPM_DIR="${HOME}/.npm"
-NVM_VERSION=0.40.3
+NVM_VERSION=0.40.4  # https://github.com/nvm-sh/nvm/releases
 NVM_DIR="${HOME}/.nvm"
 
 walk () {
