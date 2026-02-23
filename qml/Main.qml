@@ -233,18 +233,18 @@ MainView {
                         downloadItem.downloadFileName = audioBaseName + ".mp3"
                         console.log("audio file name: " + downloadItem.downloadFileName)
                         break;
-                    case "audio/ogg":
+                    case "audio/wav":
                         contentType = ContentType.Music; //int 3
                         console.log("audio file name: " + downloadItem.downloadFileName)
                         // 
-                        downloadItem.downloadFileName = audioBaseName + ".ogg"
+                        downloadItem.downloadFileName = audioBaseName + ".wav"
                         console.log("audio file name: " + downloadItem.downloadFileName)
                         break;
                     case "audio/ogg":
                         contentType = ContentType.Music; //int 3
                         console.log("audio file name: " + downloadItem.downloadFileName)
                         // 
-                        downloadItem.downloadFileName = "Cinny soundfile.ogg"
+                        downloadItem.downloadFileName = audioBaseName + ".ogg"
                         console.log("audio file name: " + downloadItem.downloadFileName)
                         break;
                     case "video/mp4":
