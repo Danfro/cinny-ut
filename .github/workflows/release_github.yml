@@ -59,8 +59,13 @@ jobs:
           python3 -m pip install clickable-ut
       - name: Build
         # build the app with clickable for all specified architectures
+        # then publish to OpenStore using the API key specified as Github secret with the last commit message as changelog
+        env:
+          OPENSTORE_API_KEY: ${{ secrets.OPENSTORE_API_KEY }}
         run: |
-          clickable build --arch ${{ matrix.arch }}
+          clickable build --arch arm64
+          clickable build --arch amd64
+          clickable build --arch armhf
       - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
         uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
