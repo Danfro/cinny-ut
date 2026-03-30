@@ -59,6 +59,6 @@ To create a patch...
 - move the patch file from the cinny folder to the patches folder
 - combined command (edit patch file name): 
 
-  `cd cinny && git diff > ../patches/0006-Download-media-using-qml-backend.patch && cd ..`
+  `cd cinny && git diff > ../patches/9004-downgrade_matrix-sdk.patch && cd ..`
 
 - the `git apply` command is then used in [prebuild.sh](/prebuild.sh) to apply the diff patches
