@@ -81,6 +81,8 @@ MainView {
         appSettings.systemTheme = theme.name.substring(theme.name.lastIndexOf(".")+1)
 
         serverCheckTimer.start()
+
+        pushClientLoader.active = true
     }
     onActiveChanged: () => {appSettings.windowActive = mainView.active}
 
@@ -193,6 +195,14 @@ MainView {
             property var push: null
 
             signal matrixPushTokenChanged();
+
+            function ensurePushToken() {
+                if (appSettings.pushToken === '') {
+                    console.log("Push token missing, reactivating PushClient...")
+                    pushClientLoader.active = false
+                    pushClientLoader.active = true  // force reload
+                }
+            }
 
             function setTheme(themeName) {
                 setCurrentTheme(themeName)
@@ -319,6 +329,7 @@ MainView {
                         args.defaultArgument.at(0).toString().replace("cinny://", "http://localhost:19999/") : 
                         "http://localhost:19999/";
                     serverCheckTimer.stop();
+                    webChannelObject.ensurePushToken() // when the server is available, make sure we have a push token, otherwise get one
                 } else {
                     console.log("local HTTP-server not ready yet, status: " + xhr.status);
                 }
