@@ -7,7 +7,7 @@ REPO_URL="https://github.com/cinnyapp/cinny"
 APP_TARGET="dist"
 REPO_DIR=${ROOT}/${REPO_NAME}
 
-REPO_VERSION="4.10.4"
+REPO_VERSION="4.10.4.1RC"
 CLICK_VERSION_PREFIX="n"
 
 NODE_VERSION=24.13.1
