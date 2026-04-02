@@ -274,26 +274,18 @@ MainView {
 
                 filePath = downloadItem.downloadDirectory + "/" + downloadItem.downloadFileName
                 downloadItem.accept()
-                // wait until download is finished before processing the next command
-                while(downloadItem.state != 1) {
-                    wait(100)
-                }
-                mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {
-                    "url": filePath, 
-                    "itemContentType": contentType, 
-                    "exportHandler": ContentHandler.Destination
-                    }
-                )
-            }
-            // js waiter function
-            function wait(ms){
-                var start = new Date().getTime();
-                var end = start;
-                while(end < start + ms) {
-                    end = new Date().getTime();
+
+
+            onDownloadFinished: function(downloadItem) {
+                if (downloadItem.state === WebEngineDownloadItem.DownloadCompleted) {
+                    mainPageStack.push(Qt.resolvedUrl("DownloadPage.qml"), {
+                        "url": filePath,
+                        "itemContentType": contentType,
+                        "exportHandler": ContentHandler.Destination
+                    })
                 }
             }
-        }
+
     }
 
     Timer {
