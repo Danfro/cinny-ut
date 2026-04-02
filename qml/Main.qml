@@ -274,6 +274,7 @@ MainView {
 
                 filePath = downloadItem.downloadDirectory + "/" + downloadItem.downloadFileName
                 downloadItem.accept()
+            }
 
 
             onDownloadFinished: function(downloadItem) {
@@ -284,7 +285,6 @@ MainView {
                         "exportHandler": ContentHandler.Destination
                     })
                 }
-            }
        }
     }
 
