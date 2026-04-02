@@ -285,7 +285,7 @@ MainView {
                     })
                 }
             }
-
+       }
     }
 
     Timer {
