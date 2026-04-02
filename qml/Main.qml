@@ -286,8 +286,8 @@ MainView {
                     })
                 }
        }
+     }
     }
-
     Timer {
         id: serverCheckTimer
         interval: 200  // wait some ms to ensure HTTP-Server is ready before loading components in mainPage and setting url
