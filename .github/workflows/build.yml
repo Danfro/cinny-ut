@@ -11,11 +11,11 @@ on:
 # only build if
 # a) the keyword "run_ci" is part of the commit message
 # b) no tag was pushed, because with a pushed tag another workflow is tiggered
+#    if: |
+#      contains(github.event.head_commit.message, 'run_ci') &&
+#      github.event.head_commit.tag == ''
 jobs:
   build:
-    if: |
-      contains(github.event.head_commit.message, 'run_ci') &&
-      github.event.head_commit.tag == ''
     strategy:
       matrix:
         arch: [amd64, arm64, armhf]
