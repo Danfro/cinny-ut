@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4 # here @latest doesn't work, specific version v4 or above
+        uses: actions/checkout@v5 # here @latest doesn't work, specific version v4 or above
         with:
           submodules: 'true'
       - name: Extract NVM version from prebuild.sh
@@ -54,7 +54,7 @@ jobs:
           clickable build --arch ${{ matrix.arch }}
       - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
-        uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
+        uses: actions/upload-artifact@v5 # here @latest doesn't work, specific version v4 or above
         with:
           name: ${{ matrix.appname }}_${{ matrix.arch }}
           # name: cinny.danfro_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
