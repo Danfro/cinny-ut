@@ -54,10 +54,11 @@ jobs:
           clickable build --arch ${{ matrix.arch }}
       - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
-        uses: actions/upload-artifact@v6 # here @latest doesn't work, specific version v4 or above
+        uses: actions/upload-artifact@v7 # here @latest doesn't work, specific version v4 or above
         with:
           name: ${{ matrix.appname }}_${{ matrix.arch }}
           # name: cinny.danfro_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
           path: build/*/app/*.click
           if-no-files-found: error
+          archive: false
 
