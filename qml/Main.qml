@@ -157,6 +157,17 @@ MainView {
             anchors.fill: parent
         }
 
+        FlyingBackButton {
+            id: returnButton
+            visible: (webView.url == "http://localhost:19999/" || webView.url == "http://localhost:19999/home/") ? false : true
+            hideable: true
+            // onClicked: webView.goBack()
+            onClicked: {
+                webView.goBack()
+                console.log(webView.url)
+            }
+        }
+
         Connections {
             target: UriHandler
 

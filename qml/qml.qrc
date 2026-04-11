@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>Main.qml</file>
         <file>DownloadPage.qml</file>
+        <file>FlyingBackButton.qml</file>
         <file>UploadPage.qml</file>
         <file>SwipeGestureHandler.qml</file>
         <file>HorizontalSwipeHandler.qml</file>
