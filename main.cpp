@@ -18,6 +18,7 @@
 #include <QCoreApplication>
 #include <QUrl>
 #include <QString>
+#include <QFile>
 #include <QObject>
 #include <QQuickView>
 #include <QtQuickControls2/QQuickStyle>

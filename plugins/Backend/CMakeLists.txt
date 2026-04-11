@@ -11,7 +11,8 @@ set(CMAKE_AUTOMOC ON)
 
 add_library(${PLUGIN} MODULE ${SRC})
 set_target_properties(${PLUGIN} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PLUGIN})
-qt5_use_modules(${PLUGIN} Qml Quick DBus)
+target_link_libraries(${PLUGIN} Qt6::Qml Qt6::Quick Qt6::DBus)
+#qt_use_modules(${PLUGIN} Qml Quick DBus)
 
 execute_process(
     COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH

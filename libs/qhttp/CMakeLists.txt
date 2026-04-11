@@ -2,8 +2,8 @@ project(qhttp C CXX)
 cmake_minimum_required(VERSION 3.0.0)
 
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Network REQUIRED)
+find_package(Qt6Core REQUIRED)
+find_package(Qt6Network REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -37,8 +37,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 target_link_libraries(${QHTTP} PUBLIC
-    Qt5::Core
-    Qt5::Network
+    Qt6::Core
+    Qt6::Network
 )
 
 target_include_directories(${QHTTP} PUBLIC
