@@ -66,6 +66,7 @@ MainView {
         property bool windowActive: true
         property bool bottomBarIsActive: true
         property bool visualHintIsActive: true
+        property bool flyingBackButtonIsActive: false
     }
 
     Arguments {
@@ -84,19 +85,19 @@ MainView {
     onActiveChanged: () => {appSettings.windowActive = mainView.active}
 
     function setCurrentTheme(themeName) {
-            if (themeName === "System") {
-              theme.name = "";
-            }
-            else if (themeName === "SuruDark") {
-                theme.name = "Lomiri.Components.Themes.SuruDark"
-            }
-            else if (themeName === "Ambiance") {
-                theme.name = "Lomiri.Components.Themes.Ambiance"
-            }
-            else {
-              theme.name = "";
-            }
+        if (themeName === "System") {
+            theme.name = "";
         }
+        else if (themeName === "SuruDark") {
+            theme.name = "Lomiri.Components.Themes.SuruDark"
+        }
+        else if (themeName === "Ambiance") {
+            theme.name = "Lomiri.Components.Themes.Ambiance"
+        }
+        else {
+            theme.name = "";
+        }
+    }
 
     PageStack {
         id : mainPageStack
@@ -158,14 +159,11 @@ MainView {
         }
 
         FlyingBackButton {
-            id: returnButton
-            visible: (webView.url == "http://localhost:19999/" || webView.url == "http://localhost:19999/home/") ? false : true
+            id: flyingBackButton
+            enabled: appSettings.flyingBackButtonIsActive
+            visible: !enabled ? false : (webView.url == "" || webView.url == "http://localhost:19999/" || webView.url == "http://localhost:19999/home/") ? false : true
             hideable: true
-            // onClicked: webView.goBack()
-            onClicked: {
-                webView.goBack()
-                console.log(webView.url)
-            }
+            onClicked: webView.goBack()
         }
 
         Connections {
@@ -198,6 +196,11 @@ MainView {
 
             function setTheme(themeName) {
                 setCurrentTheme(themeName)
+            }
+
+            function toggleFlyingBackButton(value) {
+                flyingBackButton.enabled = value
+                appSettings.flyingBackButtonIsActive = value
             }
 
             function toggleBottomBar(value) {
@@ -296,8 +299,8 @@ MainView {
                         "exportHandler": ContentHandler.Destination
                     })
                 }
-       }
-     }
+            }
+        }
     }
     Timer {
         id: serverCheckTimer

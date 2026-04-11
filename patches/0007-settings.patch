@@ -1,23 +1,25 @@
 diff --git a/src/app/state/settings.ts b/src/app/state/settings.ts
-index 31ee6cc..1acfadf 100644
+index 31ee6cc..f68531e 100644
 --- a/src/app/state/settings.ts
 +++ b/src/app/state/settings.ts
-@@ -41,6 +41,8 @@ export interface Settings {
+@@ -41,6 +41,9 @@ export interface Settings {
    dateFormatString: string;
  
    developerTools: boolean;
 +
 +  displayBottomGestureHint: boolean;
++  enableFlyingBackButton: boolean;
  }
  
  const defaultSettings: Settings = {
-@@ -69,7 +71,8 @@ const defaultSettings: Settings = {
+@@ -69,7 +72,9 @@ const defaultSettings: Settings = {
    legacyUsernameColor: false,
  
    showNotifications: true,
 -  isNotificationSounds: true,
 +  isNotificationSounds: false,
 +  displayBottomGestureHint: true,
++  enableFlyingBackButton: false,
  
    hour24Clock: false,
    dateFormatString: 'D MMM YYYY',
