@@ -26,11 +26,12 @@ set(DESKTOP_FILE_NAME ${PROJECT_NAME}.desktop)
 
 # This command figures out the minimum SDK framework for use in the manifest
 # file via the environment variable provided by Clickable or sets a default value otherwise.
-if(DEFINED ENV{SDK_FRAMEWORK})
-    set(CLICK_FRAMEWORK "$ENV{SDK_FRAMEWORK}")
-else()
-    set(CLICK_FRAMEWORK "ubuntu-sdk-20.04")
-endif()
+# if(DEFINED ENV{SDK_FRAMEWORK})
+#     set(CLICK_FRAMEWORK "$ENV{SDK_FRAMEWORK}")
+# else()
+#     set(CLICK_FRAMEWORK "ubuntu-sdk-20.04")
+# endif()
+set(CLICK_FRAMEWORK "ubuntu-touch-24.04-1.x")
 
 # This figures out the target architecture for use in the manifest file.
 if(DEFINED ENV{ARCH})
