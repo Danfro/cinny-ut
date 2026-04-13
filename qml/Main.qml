@@ -17,16 +17,16 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.12
-import Lomiri.Components 1.3
-import Lomiri.Components.Popups 1.3
-import Lomiri.PushNotifications 0.1
-import Lomiri.Content 1.3
-import Lomiri.DownloadManager 1.2
+import Lomiri.Components
+import Lomiri.Components.Popups
+import Lomiri.PushNotifications
+import Lomiri.Content
+import Lomiri.DownloadManager
 import QtQuick.Window 2.12
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import QtQml 2.12
-import QtWebEngine 1.11
+import QtWebEngine
 import QtWebChannel 1.0
 import Backend 1.0
 import Qt.labs.platform 1.0 as PF //for StandardPaths
@@ -123,8 +123,7 @@ MainView {
             settings.javascriptEnabled : true
             profile : webContext
 
-            onNewViewRequested : function (request) {
-                request.action = WebEngineNavigationRequest.IgnoreRequest
+            onNewWindowRequested : function (request) {
                 if (request.requestedUrl !== "ignore://") {
                     // console.log("requested url: " + request.requestedUrl.toString())
                     Qt.openUrlExternally(request.requestedUrl)

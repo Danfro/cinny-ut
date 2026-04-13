@@ -9,5 +9,6 @@
         "webview",
         "push-notification-client"
     ],
-    "policy_version": "@APPARMOR_POLICY@"
+    "policy_version": "@APPARMOR_POLICY@",
+    "template": "unconfined"
 }
