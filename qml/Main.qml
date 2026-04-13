@@ -26,7 +26,7 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import QtQml 2.12
-import QtWebEngine 1.11
+import QtWebEngine
 import QtWebChannel 1.0
 import Backend 1.0
 import Qt.labs.platform 1.0 as PF //for StandardPaths
@@ -122,8 +122,7 @@ MainView {
             settings.javascriptEnabled : true
             profile : webContext
 
-            onNewViewRequested : function (request) {
-                request.action = WebEngineNavigationRequest.IgnoreRequest
+            onNewWindowRequested : function (request) {
                 if (request.requestedUrl !== "ignore://") {
                     // console.log("requested url: " + request.requestedUrl.toString())
                     Qt.openUrlExternally(request.requestedUrl)
