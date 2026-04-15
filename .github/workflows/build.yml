@@ -21,11 +21,18 @@ jobs:
         arch: [amd64, arm64, armhf]
         appname: [cinny.danfro]
     runs-on: ubuntu-latest
+    container:
+      image: clickable/ci-ut24.04-1.x-${{ matrix.arch }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5 # here @latest doesn't work, specific version v4 or above
+        # https://github.com/actions/checkout
+        uses: actions/checkout@v6 # here @latest doesn't work, specific version v6 or above
         with:
           submodules: 'true'
+      - name: Fix git dubious ownership
+        run:  >-
+          git status
+          || git config --system --add safe.directory "$GITHUB_WORKSPACE"
       - name: Extract NVM version from prebuild.sh
         id: extract-nvm-version
         run: echo "NVM_VERSION=$(grep -oP '(?<=NVM_VERSION=)[^ ]+' prebuild.sh)" >> $GITHUB_ENV
@@ -43,17 +50,13 @@ jobs:
       - name: Parse version
         run: |
           echo ARTIFACT_VERSION=$(cat prebuild.sh | grep "export REPO_VERSION=" | awk -F'"' '$0=$2')$(cat prebuild.sh | grep "export CLICK_VERSION_PREFIX=" | awk -F'"' '$0=$2') >> $GITHUB_ENV
-      - name: Install clickable
-        run: |
-          sudo apt install adb git python3 python3-pip python3-setuptools
-          python3 -m pip install clickable-ut
-          echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
       - name: Build
         # build the app with clickable for all specified architectures
         run: |
           clickable build --arch ${{ matrix.arch }}
       - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
+        # https://github.com/actions/upload-artifact
         uses: actions/upload-artifact@v7 # here @latest doesn't work, specific version v4 or above
         with:
           name: ${{ matrix.appname }}_${{ matrix.arch }}
