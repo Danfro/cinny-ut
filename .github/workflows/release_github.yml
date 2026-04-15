@@ -25,11 +25,18 @@ jobs:
         arch: [amd64, arm64, armhf]
         appname: [cinny.danfro]
     runs-on: ubuntu-latest
+    container:
+      image: clickable/ci-ut24.04-1.x-${{ matrix.arch }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4 # here @latest doesn't work, specific version v4 or above
+        # https://github.com/actions/checkout
+        uses: actions/checkout@v6 # here @latest doesn't work, specific version v6 or above
         with:
           submodules: 'true'
+      - name: Fix git dubious ownership
+        run:  >-
+          git status
+          || git config --system --add safe.directory "$GITHUB_WORKSPACE"
       - name: Extract NVM version from prebuild.sh
         id: extract-nvm-version
         run: echo "NVM_VERSION=$(grep -oP '(?<=NVM_VERSION=)[^ ]+' prebuild.sh)" >> $GITHUB_ENV
@@ -54,24 +61,24 @@ jobs:
         run: echo "ARTIFACT_VERSION=$ARTIFACT_VERSION"
         env:
           ARTIFACT_VERSION: ${{ env.ARTIFACT_VERSION }}
-      - name: Install clickable
-        run: |
-          python3 -m pip install clickable-ut
       - name: Build
         # build the app with clickable for all specified architectures
         run: |
           clickable build --arch ${{ matrix.arch }}
       - name: Upload artifacts
         # upload the build artifacts to github using the appname and version
-        uses: actions/upload-artifact@v4 # here @latest doesn't work, specific version v4 or above
+        # https://github.com/actions/upload-artifact
+        uses: actions/upload-artifact@v7 # here @latest doesn't work, specific version v4 or above
         with:
           name: ${{ matrix.appname }}_${{ matrix.arch }}
+          # name: cinny.danfro_${{ env.ARTIFACT_VERSION }}_${{ matrix.arch }}.zip
           path: build/*/app/*.click
           if-no-files-found: error
+          archive: false
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: softprops/action-gh-release@v2 # https://github.com/softprops/action-gh-release
+        uses: softprops/action-gh-release@v3 # https://github.com/softprops/action-gh-release
         with:
           files: build/*/app/*.click
           body: "${{ github.event.head_commit.message }}" # Grab the last commit message as changelog

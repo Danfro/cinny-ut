@@ -24,11 +24,18 @@ jobs:
       matrix:
         appname: [cinny.danfro]
     runs-on: ubuntu-latest
+    container:
+      image: clickable/ci-ut24.04-1.x-${{ matrix.arch }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4 # here @latest doesn't work, specific version v4 or above
+        # https://github.com/actions/checkout
+        uses: actions/checkout@v6 # here @latest doesn't work, specific version v6 or above
         with:
           submodules: 'true'
+      - name: Fix git dubious ownership
+        run:  >-
+          git status
+          || git config --system --add safe.directory "$GITHUB_WORKSPACE"
       - name: Extract NVM version from prebuild.sh
         id: extract-nvm-version
         run: echo "NVM_VERSION=$(grep -oP '(?<=NVM_VERSION=)[^ ]+' prebuild.sh)" >> $GITHUB_ENV
@@ -43,9 +50,6 @@ jobs:
           nvm install $NODE_VERSION
           nvm use $NODE_VERSION
           echo "Node.js $(node -v) installed via nvm"
-      - name: Install clickable
-        run: |
-          python3 -m pip install clickable-ut
       - name: Build
         # build the app with clickable for all specified architectures
         # then publish to OpenStore using the API key specified as Github secret with the last commit message as changelog
@@ -62,7 +66,7 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: softprops/action-gh-release@v2 # https://github.com/softprops/action-gh-release
+        uses: softprops/action-gh-release@v3 # https://github.com/softprops/action-gh-release
         with:
           files: build/*/app/*.click
           body: ${{ github.event.head_commit.message }} # Grab the last commit message as changelog
