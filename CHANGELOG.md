@@ -1,5 +1,11 @@
 <!-- Note: avoid if possible ', " or / or other special characters, otherwise the build might error on parsing the content. -->
 
+v4.10.4.2RC
+Cinny UT changelog:
+- fixed: some structure errors so notifications should work again, thanks to @paulcarroty
+- improved: enforce creating a pushtoken if its empty
+- added: first draft for optional flying back button (see settings page to enable)
+
 v4.10.4
 For Cinny changelog please see releases info under https://github.com/cinnyapp/cinny/releases.
 
