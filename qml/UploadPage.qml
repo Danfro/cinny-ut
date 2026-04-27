@@ -16,8 +16,8 @@
  */
 
 import QtQuick 2.12
-import Lomiri.Components 1.3
-import Lomiri.Content 1.3
+import Lomiri.Components
+import Lomiri.Content
 import Backend 1.0
 
 

@@ -1,7 +1,33 @@
 clickable_minimum_required: 8
 builder: cmake
-framework: ubuntu-sdk-20.04
+framework: ubuntu-touch-24.04-1.x
 kill: cinny
 prebuild: "bash ${ROOT}/prebuild.sh"
 install_root_data:
   - "${ROOT}/target"
+
+image_setup:
+    run:
+        - id
+        - sed -i 's/24\.04-1\.x/24\.04-2\.x/g' /etc/apt/preferences.d/99-ubports-no-qt6.pref
+        - sed -i 's/400/2000/g' /etc/apt/preferences.d/99-ubports-no-qt6.pref
+        - sed -i 's/24\.04-1\.x/24\.04-2\.x/g' /etc/apt/sources.list.d/ubports.list && cat /etc/apt/sources.list.d/ubports.list
+        - apt update
+        - apt remove -y liblomiri-connectivity-qt1:$ARCH
+        - apt full-upgrade -y
+        - apt install -y qt6-wayland:$ARCH qtubuntu-qt6:$ARCH maliit-inputcontext-qt6:$ARCH qmlscene-qt6:$ARCH
+        - apt install -y qt6-base-dev:$ARCH qt6-base-private-dev:$ARCH qt6-declarative-dev:$ARCH qt6-declarative-private-dev:$ARCH qt6-5compat-dev:$ARCH qt6-svg-dev:$ARCH qt6-tools-dev:$ARCH qt6-webengine-dev:$ARCH libapparmor-dev:$ARCH libpsl-dev:$ARCH
+        - apt install -y qml6-module-qt-labs-folderlistmodel:$ARCH qml6-module-qt-labs-settings:$ARCH qml6-module-qtqml-workerscript:$ARCH qml6-module-qtquick:$ARCH qml6-module-qtquick-controls:$ARCH qml6-module-qtquick-layouts:$ARCH qml6-module-lomiri-systeminfo:$ARCH qml6-module-lomiri-content:$ARCH qml6-module-lomiri-components:$ARCH qml6-module-lomiri-components-extras:$ARCH qml6-module-lomiri-action:$ARCH qml6-module-qtquick-templates:$ARCH qml6-module-qt5compat-graphicaleffects:$ARCH qml6-module-qtwebengine:$ARCH libqt6webenginecore6-bin:$ARCH qt6-webengine-dev-tools:$ARCH lomiri-ui-toolkit-theme-qt6:$ARCH
+        - apt install -y qml6-module-lomiri-downloadmanager:$ARCH qml6-module-lomiri-pushnotifications:$ARCH
+install_bin:
+    - "/usr/lib/qt6/libexec/QtWebEngineProcess"
+    - "/usr/lib/qt6/bin/qmlscene"
+
+install_lib:
+    - "/usr/lib/$ARCH_TRIPLET/lib*qt6*.so*"
+    - "/usr/lib/$ARCH_TRIPLET/lib*Qt6*.so*"
+    - "/usr/lib/$ARCH_TRIPLET/libOpenGL*.so*"
+    - "/usr/lib/$ARCH_TRIPLET/libb2*.so*"
+    - "/usr/lib/$ARCH_TRIPLET/libKTactileFeedback.so*"
+    - "/usr/lib/$ARCH_TRIPLET/qt6"
+    - "/usr/share/qt6/resources"

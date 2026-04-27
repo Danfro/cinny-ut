@@ -1,6 +1,6 @@
 [Desktop Entry]
 _Name=Cinny UT
-Exec=cinny %U
+Exec=wrapper ./cinny %U
 Icon=assets/logo.svg
 Terminal=false
 Type=Application
