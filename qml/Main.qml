@@ -71,8 +71,6 @@ MainView {
 
     Arguments {
         id: args;
-        //TRANSLATORS: %1 does specify the parameters, %2 does specify the url for weather apps repo at gitlab
-        // defaultArgument.help: i18n.tr("Valid arguments for weather app are: %1 They will be managed by system. See the README at %2 for a full comment about them").arg("--location, --city, --lat, --lng").arg("https://gitlab.com/ubports/development/apps/lomiri-weather-app/");
         defaultArgument.valueNames: []
     }
 
