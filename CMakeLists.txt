@@ -3,14 +3,14 @@ project(cinny C CXX)
 
 # Automatically create moc files
 set(CMAKE_AUTOMOC ON)
-# set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 include(GNUInstallDirs)
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Qml REQUIRED)
-find_package(Qt5Quick REQUIRED)
-find_package(Qt5QuickControls2 REQUIRED)
+find_package(Qt6Core REQUIRED)
+find_package(Qt6Qml REQUIRED)
+find_package(Qt6Quick REQUIRED)
+find_package(Qt6QuickControls2 REQUIRED)
 
 execute_process(
     COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
@@ -49,12 +49,13 @@ install(FILES url-dispatcher.json DESTINATION ${DATA_DIR})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES ${PROJECT_NAME}.apparmor DESTINATION ${DATA_DIR})
 install(FILES assets/logo.svg DESTINATION assets)
+install(PROGRAMS wrapper DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-qt5_add_resources(QT_RESOURCES qml/qml.qrc)
-qt5_add_resources(QT_RESOURCES assets/assets.qrc)
+qt_add_resources(QT_RESOURCES qml/qml.qrc)
+qt_add_resources(QT_RESOURCES assets/assets.qrc)
 add_executable(${PROJECT_NAME} main.cpp ${QT_RESOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE -s)
-target_link_libraries(${PROJECT_NAME} QHttp Qt5::Gui Qt5::Qml Qt5::Quick Qt5::QuickControls2)
+target_link_libraries(${PROJECT_NAME} QHttp Qt6::Gui Qt6::Qml Qt6::Quick Qt6::QuickControls2)
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 # Translations

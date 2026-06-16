@@ -1,6 +1,6 @@
 add_executable(push push.cpp )
 
-target_link_libraries(push Qt5::Core)
+target_link_libraries(push Qt6::Core)
 
 install(FILES push-apparmor.json DESTINATION push)
 install(FILES push.json DESTINATION push)
